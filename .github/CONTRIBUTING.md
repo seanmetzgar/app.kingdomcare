@@ -31,22 +31,36 @@ This section guides you through submitting an enhancement suggestion for Kingdom
 
 When submitting your request, be sure to include as much information about how your suggestion adds or enhances the current application for the community. Feel free to add any suggestions about how you would implement changes to the application, including images of design or layout concepts.
 
-## Creating Pull Requests
+### Creating Pull Requests
 
-... coming soon ...
+When creating a new Pull Request, be sure to follow the template and guidelines provided. Below is some details about each section outlined in the template. Remember, when adding code, less is more. We may be hesitant to merge large PRs.
 
-### Coming Soon
+- **Title**
+    - Lead off with the appropriate [Gitmoji](https://gitmoji.carloscuesta.me/).
+    - Please also try to use Active-Present voice (Add vs Adds or Added, Fix vs Fixes or Fixed, etc)
+    - Example ( :bug: Fix issue with header not displaying correctly in Firefox & Chrome. )
+- **Description**
+    - Summary of what was added or addressed.
+    - Don't included reference links to Issues/Feature Requests here.
+- **Addresses Issues**
+    - This is where you list any Issue(s)/Feature Request(s) that have been addressed by the commit.
+    - Add a bullet for each issue/feature #.
+- **Proposed Documentation Changes**
+    - If you feel your code warrants a documentation change, and you are unable/uncomfortable to make it yourself... let us know here.
+- **Proposed Release Notes**
+    - Give us 1-2 bullet points we can add to the official release notes.
+
+## Coming Soon
 
 The following guides will be coming soon:
 
 - Coding
 - Illustration
 - Design
-- Pull Requests
 - Git Commits
 
 > **Note:** Check back frequently, we update a lot!
 
-[issues]:https://github.com/cvasquez/facecreator/issues
-[new-issue]:https://github.com/ClickPop/facecreator/issues/new?assignees=&labels=bug&template=bug_report.md&title=%5BBUG%5D
-[new-feature]:https://github.com/ClickPop/facecreator/issues/new?assignees=&labels=enhancement&template=feature_request.md&title=%5BFEATURE%5D
+[issues]:https://github.com/ewereka/app.kingdomcare/issues
+[new-issue]:https://github.com/ewereka/app.kingdomcare/issues/new?assignees=&labels=bug&template=bug_report.md&title=%5BBUG%5D
+[new-feature]:https://github.com/ewereka/app.kingdomcare/issues/new?assignees=&labels=enhancement&template=feature_request.md&title=%5BFEATURE%5D
