@@ -48,10 +48,19 @@ class RegisterController extends Controller
      */
     protected function validator(array $data)
     {
+        // TODO: If role = sitter, make dob required.
         return Validator::make($data, [
-            'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
             'password' => ['required', 'string', 'min:8', 'confirmed'],
+
+            'first_name' => ['string', 'max:255'],
+            'last_name' => ['string', 'max:255'],
+
+            'city' => ['string', 'max:255'],
+            'region' => ['string', 'max:255'],
+            'phone' => ['string', new USPhoneNumber],
+
+            'dob' => ['date']
         ]);
     }
 
@@ -63,10 +72,23 @@ class RegisterController extends Controller
      */
     protected function create(array $data)
     {
-        return User::create([
-            'name' => $data['name'],
+        // TODO: Attach role based on registration page.
+        $user = User::create([
             'email' => $data['email'],
             'password' => Hash::make($data['password']),
+
+            'first_name' => $data['first_name'],
+            'last_name' => $data['last_name'],
+
+            'city' => $data['city'],
+            'region' => $data['region'],
+            'phone' => $data['phone'],
+
+            'dob' => $data['dob']
         ]);
+        $user->roles()
+            ->attach(Role::where('name', 'unknown')->first());
+
+        return $user;
     }
 }

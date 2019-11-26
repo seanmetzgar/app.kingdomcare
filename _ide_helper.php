@@ -3,7 +3,7 @@
 
 /**
  * A helper file for Laravel 5, to provide autocomplete information to your IDE
- * Generated for Laravel 6.5.2 on 2019-11-25 02:37:23.
+ * Generated for Laravel 6.6.0 on 2019-11-26 19:55:57.
  *
  * This file should not be included in your code, only analyzed by your IDE!
  *
@@ -10326,7 +10326,7 @@ namespace Illuminate\Support\Facades {
         /**
          * Create a new response for a given view.
          *
-         * @param string $view
+         * @param string|array $view
          * @param array $data
          * @param int $status
          * @param array $headers
@@ -10567,6 +10567,20 @@ namespace Illuminate\Support\Facades {
      * @see \Illuminate\Routing\Router
      */ 
     class Route {
+        
+        /**
+         * Register a new HEAD route with the router.
+         *
+         * @param string $uri
+         * @param \Closure|array|string|callable|null $action
+         * @return \Illuminate\Routing\Route 
+         * @static 
+         */ 
+        public static function head($uri, $action = null)
+        {
+                        /** @var \Illuminate\Routing\Router $instance */
+                        return $instance->head($uri, $action);
+        }
         
         /**
          * Register a new GET route with the router.
