@@ -1,0 +1,108 @@
+html, body{
+    height: 100%;
+}
+
+body.full-screen {
+    height: 100vh;
+
+    &::before {
+        display: block;
+        content: '';
+
+        position: fixed;
+        z-index: -1000;
+        top:0; bottom: 0;
+        left: 0; right: 0;
+
+        background: $dpurple url(images/bg-image.jpg) no-repeat;
+        background-size: cover;
+        font-family: $pfont;
+    }
+    &::after {
+        display: block;
+        content: '';
+
+        position: fixed;
+        z-index: -999;
+        top:0; bottom: 0;
+        left: 0; right: 0;
+
+        background-color: $dpurple;
+        opacity: 0.9;
+    }
+}
+
+/** Checkbox **/
+label.checkbox-field {
+    display: block;
+    position: relative;
+    padding-left: 25px;
+    margin-bottom: 12px;
+    cursor: pointer;
+
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+
+    /* Hide the browser's default checkbox */
+    input {
+        position: absolute;
+        opacity: 0;
+        cursor: pointer;
+        height: 0;
+        width: 0;
+
+        /* Create a custom checkbox */
+        ~ .checkmark {
+            position: absolute;
+            top: 0;
+            left: 0;
+            height: 20px;
+            width: 20px;
+            border:solid 3px $lpurple;
+            border-top: solid 1px $lpurple;
+            border-left:solid 1px $lpurple;
+        }
+
+        /* When the checkbox is checked, add a blue background */
+        &:checked {
+            ~ .checkmark {
+                background-color: $dpurple;
+                border:solid 2px $dpurple;
+                border-top: solid 1px $dpurple;
+                border-left:solid 1px $dpurple;
+
+                /* Show the checkmark when checked */
+                &::after {
+                    position: absolute;
+
+                    display: block;
+                    content: '';
+
+                    left: 6px;
+                    top: 3px;
+                    width: 5px;
+                    height: 10px;
+                    border: solid white;
+                    border-width: 0 2px 2px 0;
+                    -webkit-transform: rotate(45deg);
+                    -ms-transform: rotate(45deg);
+                    transform: rotate(45deg);
+                }
+            }
+        }
+    }
+
+    &:hover {
+        input {
+
+            /* On mouse-over, add a grey background color */
+            ~ .checkmark {
+                border:solid 2px $dpurple;
+                border-top: solid 1px $dpurple;
+                border-left:solid 1px $dpurple;
+            }
+        }
+    }
+}
