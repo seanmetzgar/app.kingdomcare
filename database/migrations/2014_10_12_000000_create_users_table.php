@@ -14,11 +14,26 @@ class CreateUsersTable extends Migration
     public function up()
     {
         Schema::create('users', function (Blueprint $table) {
-            $table->bigIncrements('id');
-            $table->string('name');
+            $table->uuid('id')->primary();
             $table->string('email')->unique();
-            $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
+
+            // Basic Info
+            $table->string('first_name');
+            $table->string('last_name');
+
+            // Extended Basic Info
+            $table->string('city')->nullable();
+            $table->string('region')->nullable();
+            $table->string('phone')->nullable();
+
+            // Date of Birth
+            $table->date('dob')->nullable();
+
+            // Email verification field (if needed)
+            $table->timestamp('email_verified_at')->nullable();
+
+            // Laravel generated fields
             $table->rememberToken();
             $table->timestamps();
         });

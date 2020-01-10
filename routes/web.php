@@ -13,4 +13,10 @@
 
 Route::get('/', function () {
     return view('welcome');
-});
+})->name('index');
+
+Auth::routes();
+Route::get('/register/{role}', 'Auth\RegisterController@showRoleRegistrationForm')->name('register.role');
+Route::post('/register/{role}', 'Auth\RegisterController@register');
+
+Route::get('/home', 'HomeController@index')->name('home');

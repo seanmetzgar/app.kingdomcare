@@ -1,0 +1,194 @@
+form {
+    &.register {
+        display: flex !important;
+        flex-wrap: wrap;
+        justify-content: space-between;
+        margin: 0;
+
+        label {
+
+        }
+
+        input[type=text],
+        input[type=password],
+        input[type=tel],
+        input[type=email],
+        input[type=number],
+        select {
+            display: block;
+            width: 100%;
+            margin: 4px 0 0;
+            padding: 0;
+            height: 50px;
+            box-sizing: border-box;
+
+            border:solid 3px $lpurple;
+            border-top-width: 1px;
+            border-left-width: 1px;
+            border-radius: 0;
+
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            appearance: none;
+
+            background-color: white;
+
+            font-family: $pfont;
+            font-size: 1rem;
+            text-indent: 1rem;
+
+            &:focus {
+                border-color: $dpurple;
+                outline: none;
+            }
+        }
+        select {
+            option {
+                line-height: 3rem;
+                padding-left: 1rem; padding-right: 1rem;
+            }
+
+            &:focus {
+                height: auto;
+                min-height: 50px;
+
+                option {
+                    line-height: 1rem;
+                    padding-top: 12px;
+                    padding-bottom: 12px;
+                    text-indent: 0;
+                    background-color: $lpurple;
+                    outline-color: red;
+
+                    &:not(:checked) {
+                        background-color: transparent;
+                    }
+                }
+            }
+
+
+            &::-ms-expand{
+                display: none;
+            }
+
+            &.is-invalid {
+                position: relative;
+                z-index: 3;
+            }
+        }
+
+        .select-wrapper {
+            position: relative;
+            z-index: 3;
+            height: 50px;
+
+            &::after {
+                font-family: iconmonstr-iconic-font;
+
+                content: '\e013';
+                font-size: 9px;
+                position: absolute;
+                top: 50%;
+                transform: translateY(-50%);
+                right: 10px;
+                color: $orange;
+                pointer-events: none;
+            }
+        }
+
+
+        .register-field {
+            box-sizing: border-box;
+            flex-basis: 100%;
+            flex-grow: 0;
+            flex-shrink: 0;
+            padding-top: 1rem;
+
+            &.city {
+                flex-basis: 48%;
+            }
+
+            &.state {
+                flex-basis: 48%;
+            }
+            &.wide {
+                flex-basis: 100%;
+            }
+
+            &.dob {
+                flex-basis: 100%;
+
+                .dob-wrapper {
+                    display: flex;
+                    flex-wrap: wrap;
+                    -webkit-box-pack: justify;
+                    justify-content: space-between;
+
+                    .select-wrapper {
+                        position: relative;
+                        z-index: 3;
+                    }
+
+                    .dob-select {
+                        flex-basis: 31.33%;
+                        flex-grow: 0;
+                        flex-shrink: 0;
+                        box-sizing: border-box;
+
+                        &::after {
+                            transform: none;
+                        }
+                    }
+
+                    .invalid-feedback {
+                        margin-top: 3px;
+                    }
+                }
+            }
+
+            @media screen and (min-width: 800px) {
+                flex-basis: 48%;
+
+                &.city {
+                    flex-basis: 73%;
+                }
+
+                &.state {
+                    flex-basis: 23%;
+                }
+            }
+        }
+
+        .btn-container {
+            clear: both;
+            margin-top: 2rem;
+            width: 100%;
+
+            button, .btn, .btn-outline {
+                width: 90%;
+
+                @media screen and (min-width: 800px) {
+                    width: 35%;
+                }
+                @media screen and (min-width: 1200px) {
+                    width: 40%;
+                }
+            }
+        }
+    }
+}
+
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+textarea:-webkit-autofill,
+textarea:-webkit-autofill:hover,
+textarea:-webkit-autofill:focus,
+select:-webkit-autofill,
+select:-webkit-autofill:hover,
+select:-webkit-autofill:focus {
+    border: 3px solid $dpurple;
+    border-top-width: 0;
+    border-left-width: 1px;
+    background-color: $mpurple;
+}
