@@ -2,7 +2,7 @@
 
 @section('content')
     <div class="loginBox register-page">
-        <a href="{{ route('home') }}" class="left top-reg-nav"><img src="images/thin-arrow.png" alt="arrow pointing left"/> GO BACK</a>
+        <a href="{{ route('login') }}" class="left top-reg-nav"><img src="images/thin-arrow.png" alt="arrow pointing left"/> GO BACK</a>
 
         <h2>Tell Us a Little About Yourself</h2>
         <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. </p>
@@ -14,7 +14,3 @@
     </div>
     <!--loginBox-->
 @endsection
-
-
-
-

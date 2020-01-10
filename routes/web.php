@@ -16,7 +16,8 @@ Route::get('/', function () {
 })->name('index');
 
 Auth::routes();
+Route::get('/', 'Auth\LoginController@showLoginForm')->name('login');
 Route::get('/register/{role}', 'Auth\RegisterController@showRoleRegistrationForm')->name('register.role');
 Route::post('/register/{role}', 'Auth\RegisterController@register');
 
-Route::get('/home', 'HomeController@index')->name('home');
+Route::get('/dashboard', 'DashboardController@index')->name('dashboard');

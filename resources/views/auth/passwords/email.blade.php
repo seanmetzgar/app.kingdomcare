@@ -20,7 +20,7 @@
         @enderror
 
         <input class="login-btn btn" type="submit" name="submit" value="SEND">
-        <a href="{{ route('home') }}" class="btn-outline"> CANCEL </a>
+        <a href="{{ route('login') }}" class="btn-outline"> CANCEL </a>
 
         <div class="space"></div>
     </form>
