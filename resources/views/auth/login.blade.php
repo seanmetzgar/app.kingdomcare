@@ -20,18 +20,14 @@
         <form method="POST" action="{{ route('login') }}" class="loginType indexlogin">
             @csrf
             <p>Or Login with an Email Address</p>
-            <input class="text-field @error('email') is-invalid @enderror" type="email" name="email" placeholder="email address" onfocus="this.placeholder=''" onblur="this.placeholder='email address'" value="{{ old('email') }}" required autocomplete="email" autofocus>
+            <input class="text-field @error('email') is-invalid @enderror" type="email" name="email" placeholder="email address" value="{{ old('email') }}" required autocomplete="email" autofocus>
             @error('email')
-            <span class="invalid-feedback" role="alert">
-                <strong>{{ $message }}</strong>
-            </span>
+            <div class="invalid-feedback" role="alert">{{ $message }}</div>
             @enderror
 
-            <input class="text-field @error('password') is-invalid @enderror" type="password" name="password" placeholder="password" onfocus="this.placeholder=''" onblur="this.placeholder='password'"  required autocomplete="current-password">
+            <input class="text-field @error('password') is-invalid @enderror" type="password" name="password" placeholder="password" required autocomplete="current-password">
             @error('password')
-            <span class="invalid-feedback" role="alert">
-                <strong>{{ $message }}</strong>
-            </span>
+            <div class="invalid-feedback" role="alert">{{ $message }}</div>
             @enderror
 
             <label class="checkbox-field" for="remember">Keep me logged in

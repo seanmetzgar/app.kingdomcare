@@ -5,14 +5,22 @@
 
 // Reset
 @import 'includes/reset';
+
 // Variables
 @import 'includes/variables';
+
+// Core
 @import 'includes/core';
+
+// Plugins
+@import 'includes/select2/core';
+@import 'includes/jquery-ui/themes/base/datepicker';
 
 // Bootstrap
 //@import '~bootstrap/scss/bootstrap';
 
-// Unsorted
-@import 'includes/unsorted';
+// Hammer
+@import 'includes/hammer';
 
-
+// Sean
+@import 'includes/forms';

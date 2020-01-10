@@ -60,7 +60,7 @@ label.checkbox-field {
             left: 0;
             height: 20px;
             width: 20px;
-            border:solid 3px $lpurple;
+            border:solid 2px $lpurple;
             border-top: solid 1px $lpurple;
             border-left:solid 1px $lpurple;
         }
@@ -69,9 +69,7 @@ label.checkbox-field {
         &:checked {
             ~ .checkmark {
                 background-color: $dpurple;
-                border:solid 2px $dpurple;
-                border-top: solid 1px $dpurple;
-                border-left:solid 1px $dpurple;
+                border-color: $dpurple;
 
                 /* Show the checkmark when checked */
                 &::after {
@@ -99,10 +97,76 @@ label.checkbox-field {
 
             /* On mouse-over, add a grey background color */
             ~ .checkmark {
-                border:solid 2px $dpurple;
-                border-top: solid 1px $dpurple;
-                border-left:solid 1px $dpurple;
+                border-color: $dpurple;
             }
         }
     }
 }
+
+/** START Alerts **/
+.alert {
+    display: flex;
+    padding: .4rem;
+    margin: 0 0 .5rem;
+
+    line-height: 1.5rem;
+    font-family: $pfont;
+    color: $mpurple;
+    font-size: .9rem;
+
+    border-left: 3px solid $lpurple;
+    background-color: $lighterpurple;
+
+    &.alert-success {
+        &::before {
+            content: '';
+            float: left;
+            background-image: url(images/pay-check.svg);
+            background-repeat: no-repeat;
+            background-size: 1rem auto;
+            width: 1rem; height: 1.5rem;
+            margin-right: .5rem;
+        }
+    }
+}
+
+.is-invalid {
+    margin-bottom: 0 !important;
+}
+.invalid-feedback {
+    display: block;
+    padding: .4rem;
+    padding-left: 2.4rem;
+    margin-bottom: .5rem;
+
+    font-family: $pfont;
+    color: $mpurple;
+    font-size: .9rem;
+    line-height: 1.5rem;
+    font-style: italic;
+
+    background-color: $lighterpurple;
+    position: relative;
+    z-index: 0;
+
+    &::before {
+        content: '';
+        background-image: url(images/reachout.svg);
+        background-repeat: no-repeat;
+        background-size: 1.5rem auto;
+        display: block;
+        position: absolute;
+        top: .4rem;
+        left: .4rem;
+        width: 1.5rem; height: 1.5rem;
+    }
+
+    strong {
+      display: block;
+    }
+
+    &.full-width-feedback {
+        flex-basis: 100%;
+    }
+}
+/** END Alerts **/
