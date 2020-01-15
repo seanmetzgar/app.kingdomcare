@@ -47,7 +47,7 @@
         <div class="register-field state">
             <label>State
                 <div class="select-wrapper">
-                    @include('dropins/stateSelect')
+                    @include('dropins/form/stateSelect')
                 </div>
                 @error('region')
                 <span class="invalid-feedback" role="alert">
@@ -90,13 +90,13 @@
                 @endif
             ">
                 <div class="select-wrapper dob-select">
-                    @include('dropins/monthSelect')
+                    @include('dropins/form/monthSelect')
                 </div>
                 <div class="select-wrapper dob-select">
-                    @include('dropins/daySelect')
+                    @include('dropins/form/daySelect')
                 </div>
                 <div class="select-wrapper dob-select">
-                    @include('dropins/yearSelect')
+                    @include('dropins/form/yearSelect')
                 </div>
             </div>
             @if($errors->has('dob_month') || $errors->has('dob_day') || $errors->has('dob_year'))

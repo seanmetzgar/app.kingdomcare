@@ -8,8 +8,8 @@ use App\Role;
 use Illuminate\Foundation\Auth\RegistersUsers;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
-use Ewereka\Validation\Rules\USPhoneNumber;
 use Carbon;
+use Str;
 
 class RegisterController extends Controller
 {
@@ -113,11 +113,10 @@ class RegisterController extends Controller
             $dob = $data['dob'];
         }
 
-
-
         $user = User::create([
             'email' => $data['email'],
             'password' => Hash::make($data['password']),
+            'api_token' => Str::random(60),
 
             'first_name' => $data['first_name'],
             'last_name' => $data['last_name'],

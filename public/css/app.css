@@ -341,6 +341,21 @@ label.checkbox-field:hover input ~ .checkmark {
 
 /** END Alerts **/
 
+#logo #castle {
+  fill: #BCB0C4;
+  enable-background: new;
+}
+
+#logo #words {
+  fill: #1F1844;
+  enable-background: new;
+}
+
+body.full-screen #logo #castle,
+body.full-screen #logo #words {
+  fill: #FFFFFF;
+}
+
 .select2-container {
   box-sizing: border-box;
   display: inline-block;

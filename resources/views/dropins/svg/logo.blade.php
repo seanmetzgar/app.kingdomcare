@@ -1,7 +1,4 @@
 <svg version="1.1" id="logo" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 323.6 113.2" style="enable-background:new 0 0 323.6 113.2;" xml:space="preserve">
-    <style type="text/css" stroke="none" fill="#000000" stroke-width="1px">
-        .st0{fill:#FFFFFF;}
-    </style>
     <path id="castle" class="st0" d="M96.9,37.5l3.8,66.5l20.1-9.1L118,44.4L96.9,37.5z M52,37.5L48.2,104l-20.1-9.1l2.8-50.5L52,37.5z
 	 M96.7,108.8l-4.6-81.3l4.6-6.6V0h-7v7.1h-5.3V0h-7.1v7.1h-2.5h-3.6V0h-7.1v7.1H59V0h-7v20.9l4.6,6.6L52,108.8
 	C52,108.8,73.9,118.6,96.7,108.8z M148.9,93.4l-3.2-56l3.2-4.6V18.5h-4.8v4.9h-3.6v-4.9h-4.9v4.9h-1.7h-2.5v-4.9h-4.9v4.9h-3.6v-4.9

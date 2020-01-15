@@ -9,9 +9,7 @@ use Illuminate\Notifications\Notifiable;
 
 class User extends Authenticatable
 {
-    use Notifiable;
-
-    use UsesUUID;
+    use Notifiable, UsesUUID;
 
     /**
      * The attributes that are mass assignable.
@@ -23,6 +21,7 @@ class User extends Authenticatable
         'last_name',
         'email',
         'password',
+        'api_token',
         'city',
         'region',
         'phone',
@@ -35,7 +34,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $hidden = [
-        'password', 'remember_token',
+        'password', 'remember_token', 'api_token', 'dob', 'phone'
     ];
 
     /**

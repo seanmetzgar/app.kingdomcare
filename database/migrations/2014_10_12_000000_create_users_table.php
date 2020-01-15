@@ -17,6 +17,10 @@ class CreateUsersTable extends Migration
             $table->uuid('id')->primary();
             $table->string('email')->unique();
             $table->string('password');
+            $table->string('api_token', 60)
+                ->unique()
+                ->nullable()
+                ->default(null);
 
             // Basic Info
             $table->string('first_name');

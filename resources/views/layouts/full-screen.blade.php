@@ -20,7 +20,7 @@
     <main class="container">
         <header>
             <h1>
-                @include('dropins/logo-svg')
+                @include('dropins.svg.logo')
             </h1>
         </header>
 
