@@ -9,8 +9,9 @@
 
     <title>{{ config('app.name', 'Laravel') }}</title>
 
-    <!-- Scripts -->
-    <script src="{{ asset('js/app.js') }}" defer></script>
+    <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
 
     <!-- Fonts -->
     <link rel="dns-prefetch" href="//fonts.gstatic.com">
@@ -19,62 +20,82 @@
     <!-- Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
 </head>
-<body>
+<body class="main">
     <div id="app">
-        <nav class="navbar navbar-expand-md navbar-light bg-white shadow-sm">
-            <div class="container">
-                <a class="navbar-brand" href="{{ url('/') }}">
-                    {{ config('app.name', 'Laravel') }}
-                </a>
-                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="{{ __('Toggle navigation') }}">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
+        <header>
+            <nav>
+                <div class="container">
+                    <h1><a href="{{ route('index') }}">@include('dropins/svg/logo')</a></h1>
 
-                <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                    <!-- Left Side Of Navbar -->
-                    <ul class="navbar-nav mr-auto">
+                    <div id="myNav" class="overlay">
+                        <a href=""><img src="{{ asset('images/logo.svg') }}" class="hamlogo" alt="hamburger menu" /></a>
+                        <a href="javascript:void(0)" class="closebtn">&times;</a>
 
-                    </ul>
+                        <div class="overlay-content-top">
+                            <a href=""><img class="somepadding" src="images/mock-photo.png" alt="profile picture"/></a>
+                        </div>
 
-                    <!-- Right Side Of Navbar -->
-                    <ul class="navbar-nav ml-auto">
-                        <!-- Authentication Links -->
-                        @guest
-                            <li class="nav-item">
-                                <a class="nav-link" href="{{ route('login') }}">{{ __('Login') }}</a>
-                            </li>
-                            @if (Route::has('register'))
-                                <li class="nav-item">
-                                    <a class="nav-link" href="{{ route('register') }}">{{ __('Register') }}</a>
-                                </li>
-                            @endif
-                        @else
-                            <li class="nav-item dropdown">
-                                <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
-                                    {{ Auth::user()->name }} <span class="caret"></span>
-                                </a>
+                        <div class="overlay-content">
+                            <a href="work.html">Calendar</a>
+                            <a href="booking.html">Bookings</a>
+                            <a href="payments.html">Invoices and Payments</a>
+                            <a href="contact.html">My Reviews</a>
+                            <a href="contact.html">Support</a>
+                        </div>
+                    </div>
 
-                                <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
-                                    <a class="dropdown-item" href="{{ route('logout') }}"
-                                       onclick="event.preventDefault();
-                                                     document.getElementById('logout-form').submit();">
-                                        {{ __('Logout') }}
-                                    </a>
+                    <span id="ham" style="font-size:30px;cursor:pointer">&#9776;</span>
 
-                                    <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
-                                        @csrf
-                                    </form>
-                                </div>
-                            </li>
-                        @endguest
-                    </ul>
+                    <div class="nav-left">
+                        <div class="nav-top">
+
+                            <a href="#"><img class="somepadding" src="images/mock-photo.png" alt="profile picture"/></a>
+                        </div>
+                        <ul class="nav-bottom">
+                            <li><a href="calendar.html">Users</a></li>
+                            <li><a href="booking.html">Bookings</a></li>
+                            <li><a href="payments.html">User Payments</a></li>
+                            <li><a href="reviews.html">Background Checks</a></li>
+                            <li><a href="support.html">Revenue</a></li>
+                            <li><a href="support.html">Reviews</a></li>
+                        </ul>
+                    </div>
                 </div>
-            </div>
-        </nav>
+            </nav>
+        </header>
 
-        <main class="py-4">
-            @yield('content')
-        </main>
+        <div class="sitter-dash search admin-filter-bar">
+            <div class="container">
+                <h2 class="left">Administrative Dashboard</h2>
+{{--                <div class="status-wrapper right">--}}
+{{--                    <label>Global Filter</label>--}}
+
+{{--                    <h4 class="right filter-btn">This Week <i class="im im-care-down"></i></h4>--}}
+{{--                    <div class="filter-dropdown">--}}
+{{--                        <button>This Week</button>--}}
+{{--                        <button>This Month</button>--}}
+{{--                        <button>This Quarter</button>--}}
+{{--                    </div>--}}
+{{--                </div>--}}
+                <div class="space"></div>
+            </div>
+        </div>
+
+        <div class="content">
+            <div class="container admin-dash">
+                <!-- START: New & Active Users -->
+                <div class="two-section">
+                    @include('dropins.app.dashblocks.newSignups')
+                    @include('dropins.app.dashblocks.activeUsers')
+                </div>
+                <!-- END: New & Active Users -->
+
+            </div>
+        </div>
+
     </div>
+
+    <!-- Scripts -->
+    <script src="{{ asset('js/app.js') }}"></script>
 </body>
 </html>

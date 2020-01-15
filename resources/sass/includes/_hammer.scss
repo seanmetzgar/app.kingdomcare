@@ -1415,15 +1415,15 @@ body.main{
             }
 
             @media screen and (max-width:600px){
-                width: 25%;
+                width: 145px;
                 margin: 0;
                 position:absolute;
-                top: 10%;
-                left: 4%;
+                top: 8px;
+                left: 20px;
             }
 
             @media screen and (max-width:500px){
-                width: 35%;
+                width: 145px;
             }
         }
 
@@ -1575,15 +1575,17 @@ body.main{
         overflow-x: hidden;
         transition: 0.5s;
 
-        .hamlogo{
-            width: 35%;
-            position:absolute;
-            top: 25px;
-            left: 45px;
+        transform: translateX(100%);
 
-            @media screen and (min-width: 800px){
-                width: 15%;
-            }
+        &.open {
+            transform: translate(0%);
+        }
+
+        .hamlogo{
+            width: 145px;
+            position:absolute;
+            top: 13px;
+            left: 25px;
         }
 
 
@@ -1668,17 +1670,20 @@ body.main{
 
     .overlay .closebtn {
         position: absolute;
-        top: 20px;
-        right: 45px;
+        top: 13px;
+        right: 20px;
         font-size: 60px;
+        line-height: 50px;
     }
 
     @media screen and (max-height: 600px) {
+        .overlay .hamlogo {
+            width: auto;
+            height: 40px;
+        }
         .overlay a {font-size: 20px}
         .overlay .closebtn {
-            font-size: 40px;
-            top: 15px;
-            right: 35px;
+            font-size: 40px; line-height: 40px;
         }
     }
 
@@ -8474,8 +8479,8 @@ body.notification-page{
             justify-content: space-between;
             width: 110px;
             border-bottom: solid 2px $orange;
-            padding-bottom:10px;
-            padding-top: 15px;
+            padidng-top: 2px;
+            line-height: 26px;
             font-weight: bold;
             cursor: pointer;
         }

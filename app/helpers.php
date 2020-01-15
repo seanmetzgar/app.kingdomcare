@@ -65,7 +65,7 @@ function getTimeRestraints($timeRestraint) {
     return $restraints;
 }
 
-function getDeltaRestraints($timeRestraint) {
+function getPreviousTimeRestraints($timeRestraint) {
     $restraints = null;
     if (Str::startsWith($timeRestraint, 'this-')) {
         $timeRestraint = str_replace('this-', 'last-', $timeRestraint);
@@ -75,13 +75,13 @@ function getDeltaRestraints($timeRestraint) {
     return $restraints;
 }
 
-function getDeltaSpan($timeRestraint) {
-    $deltaSpan = null;
+function getTimeRestraintType($timeRestraint) {
+    $type = null;
     if (Str::startsWith($timeRestraint, 'this-')) {
-        $deltaSpan = str_replace('this-', '', $timeRestraint);
+        $type = str_replace('this-', '', $timeRestraint);
     }
 
-    return $deltaSpan;
+    return $type;
 }
 
 function processSignupCounts($users) {

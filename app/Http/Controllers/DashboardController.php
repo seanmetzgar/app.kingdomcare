@@ -27,48 +27,27 @@ class DashboardController extends Controller
      */
     public function index(Request $request)
     {
+        // Get time restraint values from session
         $defaultTimeRestraint = 'this-week';
         $globalTimeRestraint = $request->session()->get('dashboard-globalTimeRestraint', $defaultTimeRestraint);
         if ($globalTimeRestraint === 'custom') {
-            $request->session()->get('dashboard-signupsTimeRestraint', $defaultTimeRestraint);
+            $signupsTimeRestraint = $request->session()->get('dashboard-signupsTimeRestraint', $defaultTimeRestraint);
+            $activeTimeRestraint = $request->session()->get('dashboard-activeTimeRestraint', $defaultTimeRestraint);
         } else {
             $signupsTimeRestraint = $globalTimeRestraint;
+            $activeTimeRestraint = $globalTimeRestraint;
             $request->session()->put('dashboard-signupsTimeRestraint', $signupsTimeRestraint);
+            $request->session()->put('dashboard-activeTimeRestraint', $activeTimeRestraint);
         }
 
-        //New Signups
-        $newSignups = $this->getNewSignupsCounts($signupsTimeRestraint);
-        if (property_exists($newSignups, 'current')) {
-            $newSitters = (property_exists($newSignups->current, 'sitter')) ? $newSignups->current->sitter : 0;
-            $newParents = (property_exists($newSignups->current, 'parent')) ? $newSignups->current->parent : 0;
-        } else {
-            $newSitters = 0;
-            $newParents = 0;
-        }
-        $newUsers = $newParents + $newSitters;
+        //Set empty view data array
+        $viewData = [];
 
-        $viewData = [
-            'newSitters' => $newSitters,
-            'newParents' => $newParents,
-            'newSignups' => $newUsers
-        ];
+        //Signups
+        $viewData = array_merge($viewData, $this->getNewSignupsViewData($signupsTimeRestraint));
 
-        if (property_exists($newSignups, 'delta')) {
-            $deltaSitters = (property_exists($newSignups->delta, 'sitter')) ? $newSignups->delta->sitter : 0;
-            $deltaParents = (property_exists($newSignups->delta, 'parent')) ? $newSignups->delta->parent : 0;
-            $deltaUsers = $deltaParents + $deltaSitters;
-
-            $deltaUsersIncrease = $newUsers - $deltaUsers;
-            $deltaUsersChange = $deltaUsers !== 0 ? round(($deltaUsersIncrease / $deltaUsers) * 100) : false;
-            $newSignupsDeltaSpan = (property_exists($newSignups, 'deltaSpan')) ? $newSignups->deltaSpan : false;
-        } else {
-            $newSignupsDeltaSpan = false;
-        }
-
-        if ($newSignupsDeltaSpan !== false && $deltaUsersChange !== false) {
-            $viewData['deltaSignupsSpan'] = $newSignupsDeltaSpan;
-            $viewData['deltaSignups'] = (int)$deltaUsersChange;
-        }
+        //Active Users
+        $viewData = array_merge($viewData, $this->getActiveUsersViewData($activeTimeRestraint));
 
         return view('app.dashboard')->with($viewData);
     }

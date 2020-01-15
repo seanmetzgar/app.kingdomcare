@@ -14,4 +14,9 @@ class DashboardController extends Controller
         $timeRestraint = $request->has('timeRestraint') ? $request->timeRestraint : null;
         return response()->json($this->getNewSignupsCounts($timeRestraint));
     }
+
+    public function activeUsers(Request $request) {
+        $timeRestraint = $request->has('timeRestraint') ? $request->timeRestraint : null;
+        return response()->json($this->getActiveUsersCounts($timeRestraint));
+    }
 }

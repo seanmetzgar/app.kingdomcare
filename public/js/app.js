@@ -38102,6 +38102,8 @@ module.exports = function(module) {
  */
 __webpack_require__(/*! ./bootstrap */ "./resources/js/bootstrap.js");
 
+__webpack_require__(/*! ./scripts */ "./resources/js/scripts.js");
+
 /***/ }),
 
 /***/ "./resources/js/bootstrap.js":
@@ -38138,6 +38140,26 @@ window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
 __webpack_require__(/*! jquery-ui/ui/widgets/datepicker.js */ "./node_modules/jquery-ui/ui/widgets/datepicker.js");
 
 __webpack_require__(/*! select2 */ "./node_modules/select2/dist/js/select2.js");
+
+/***/ }),
+
+/***/ "./resources/js/scripts.js":
+/*!*********************************!*\
+  !*** ./resources/js/scripts.js ***!
+  \*********************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+$(document).ready(function () {
+  $('.datepicker').datepicker(); // Mobile Nav Overlay
+
+  $('#ham').on('click', function () {
+    $('#myNav').addClass('open');
+  });
+  $('#myNav').find('.closebtn').on('click', function () {
+    $('#myNav').removeClass('open');
+  });
+});
 
 /***/ }),
 
