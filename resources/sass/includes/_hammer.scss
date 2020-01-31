@@ -559,7 +559,7 @@ input:focus:-ms-input-placeholder { color:transparent; } /* IE 10+ */
     }
 }
 
-.top-reg-nav{
+.top-reg-nav {
     font-size: .8em;
     margin-top:-2%;
     padding-bottom: 2%;
@@ -572,6 +572,13 @@ input:focus:-ms-input-placeholder { color:transparent; } /* IE 10+ */
         margin-top: 1%;
     }
 
+    &.logout-link {
+        i {
+            font-size: 16px;
+            line-height: 1;
+            vertical-align: middle;
+        }
+    }
 }
 .top-reg-nav:hover{
     color: $dpurple;

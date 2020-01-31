@@ -10,7 +10,7 @@
     @endif
     <h2>Tell Us a Little About Yourself ({{ $role }})</h2>
     <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. </p>
-    <form class="register" action="{{ route('register.role', $role) }}" method="post">
+    <form class="register" action="{{ route('register') }}" method="post">
         @csrf
         <div class="register-field">
             <label>First Name

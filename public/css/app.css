@@ -345,6 +345,18 @@ body.main .content {
 
 /** END Alerts **/
 
+.sr-only {
+  clip: rect(1px, 1px, 1px, 1px);
+  -webkit-clip-path: inset(50%);
+          clip-path: inset(50%);
+  height: 1px;
+  width: 1px;
+  margin: -1px;
+  overflow: hidden;
+  padding: 0;
+  position: absolute;
+}
+
 #logo #castle {
   fill: #BCB0C4;
   enable-background: new;
@@ -366,6 +378,13 @@ body.full-screen #logo #words {
 
 .dashboard-wrapper.admin-dash {
   padding: 0 20px 20px 20px;
+}
+
+.btn.btn-logout i {
+  font-size: 24px;
+  line-height: 38px;
+  vertical-align: middle;
+  margin-right: 8px;
 }
 
 .select2-container {
@@ -1629,6 +1648,12 @@ input:focus:-ms-input-placeholder {
     padding-bottom: 3%;
     margin-top: 1%;
   }
+}
+
+.top-reg-nav.logout-link i {
+  font-size: 16px;
+  line-height: 1;
+  vertical-align: middle;
 }
 
 .top-reg-nav:hover {

@@ -53,8 +53,6 @@ class RegisterController extends Controller
      */
     protected function validator(array $data)
     {
-        // TODO: If role = sitter, make dob required.
-
         $currentYear = date('Y');
         $minYear = $currentYear - 100;
         $yearsBetween = sprintf('between:%d,%d', $minYear, $currentYear);
@@ -89,7 +87,8 @@ class RegisterController extends Controller
             'dob_month' => ['required_if:role,sitter', 'numeric', 'between:1,12'],
             'dob_year' => ['required_if:role,sitter', 'numeric', $yearsBetween],
 
-            'dob' => ['date']
+            'dob' => ['date'],
+            'role' => ['required', 'string', 'regex:/^(sitter|parent)$/'],
         ]);
     }
 
