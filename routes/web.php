@@ -22,8 +22,16 @@ Route::domain(env('APP_DOMAIN', 'app.kingdomcaresitters.com'))->group(function()
     Route::match(['put', 'patch'], '/user/{user}/select-role', 'UserController@selectRole')->name('user.select-role');
 
     Route::get('/dashboard', 'DashboardController@index')->name('dashboard');
+
     Route::get('/users', function(Request $request) {
         return 'hi';
-    })->middleware('can:viewAny,App\User')->name('users');
+    })->middleware('can:viewAll,App\User')->name('users');
+
+    Route::prefix('me')->middleware('auth')->group(function () {
+        Route::get('', 'UserController@view')->name('profile.self');
+        Route::get('edit', 'UserController@edit')->name('profile.self.edit');
+    });
+
+
 });
 

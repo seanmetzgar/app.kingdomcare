@@ -54,6 +54,17 @@ class User extends Authenticatable
         return $this->belongsToMany(Role::class);
     }
 
+    public function reviewsSent() {
+        return $this->hasMany(Review::class, 'review_by_id');
+    }
+
+    public function reviewsReceived() {
+        return $this->hasMany(Review::class, 'review_for_id');
+    }
+
+    public function bookings() {
+        return $this->hasMany(Booking::class);
+    }
 
     /**
      * @param array|string $roles
@@ -67,19 +78,40 @@ class User extends Authenticatable
         return $this->hasRole($roles) ||
             abort(401, 'This action is unauthorized.');
     }
+
     /**
      * Check multiple roles
      * @param array $roles
+     * @return bool
      */
     public function hasAnyRole($roles) {
         return null !== $this->roles()->whereIn('name', $roles)->first();
     }
+
     /**
      * Check one role
      * @param string $role
+     * @return bool
      */
     public function hasRole($role) {
         return null !== $this->roles()->where('name', $role)->first();
     }
 
+    public function getAverageRatingAttribute() {
+        $reviews = $this->reviewsReceived;
+        $ratings = array();
+
+        if ($reviews !== null) {
+            foreach ($reviews as $review) {
+                $rating = $review->rating;
+                if (is_numeric($rating)) {
+                    array_push($ratings, $rating);
+                }
+            }
+        }
+
+        $average = (count($ratings) > 0) ? (int)round(array_sum($ratings) / count($ratings)) : null;
+
+        return $average;
+    }
 }

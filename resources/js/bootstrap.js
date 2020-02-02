@@ -29,3 +29,4 @@ window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
 
 require('jquery-ui/ui/widgets/datepicker.js');
 require('select2');
+require('starrr/dist/starrr.js');

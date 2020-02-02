@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\User;
 use App\Traits\DashboardAPI;
 use Auth;
+use Gate;
 
 class UserController extends Controller
 {
@@ -36,4 +37,49 @@ class UserController extends Controller
 
         return redirect()->route('dashboard');
     }
+
+    public function view(Request $request, User $profile = null) {
+
+        if ($profile === null) {
+            $profile = Auth::user();
+        }
+
+        if (Gate::allows('view-user', $profile)) {
+            if ($profile->is(Auth::user())) {
+                if ($profile->hasRole('sitter')) {
+                    return view('app.profile.self.sitter', ['profile' => $profile]);
+                } elseif ($profile->hasRole('parent')) {
+                    return view('app.profile.self.parent', ['profile' => $profile]);
+                } elseif ($profile->hasRole('admin')) {
+                    return view('app.profile.self.admin', ['profile' => $profile]);
+                } else {
+                    return view('app.profile.self.unknown', ['profile' => $profile]);
+                }
+            } else {
+                return "someone else's profile";
+            }
+        } else { return "nope"; }
+    }
+
+    public function edit(Request $request, User $profile = null) {
+
+        if ($profile === null) {
+            $profile = Auth::user();
+        }
+
+        if (Gate::allows('update-user', $profile)) {
+            if ($profile->hasRole('sitter')) {
+                return view('app.profile.edit.sitter', ['profile' => $profile]);
+            } elseif ($profile->hasRole('parent')) {
+                return view('app.profile.edit.parent', ['profile' => $profile]);
+            } elseif ($profile->hasRole('admin')) {
+                return view('app.profile.edit.admin', ['profile' => $profile]);
+            } else {
+                return view('app.profile.edit.unknown', ['profile' => $profile]);
+            }
+        } else { abort(403); }
+    }
+
+
+
 }

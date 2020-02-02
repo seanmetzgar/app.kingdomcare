@@ -15,8 +15,7 @@ class UserPolicy
      * @param  \App\User  $user
      * @return mixed
      */
-    public function viewAny(User $user)
-    {
+    public function viewAll(User $user) {
         return $user->hasRole('admin');
     }
 
@@ -29,7 +28,18 @@ class UserPolicy
      */
     public function view(User $user, User $model)
     {
-        return ($user->hasRole('admin') || $mode->id === $user->id);
+        $canView = false;
+
+        if ($user->hasRole('admin') || $model->id === $user->id) {
+            $canView = true;
+        } elseif ($model->hasRole('sitter') && $user->hasRole('parent')) {
+            $canView = true;
+        } elseif ($model->hasRole('parent') && $user->hasRole('sitter')) {
+            $canView = true;
+        }
+        // TODO: Blocked Users
+
+        return $canView;
     }
 
     /**
@@ -52,7 +62,7 @@ class UserPolicy
      */
     public function update(User $user, User $model)
     {
-        return ($user->hasRole('admin') || $mode->id === $user->id);
+        return ($user->hasRole('admin') || $model->id === $user->id);
     }
 
     /**

@@ -7066,8 +7066,6 @@ body.main .content{
 }
 
 .sitter-tab{
-
-
     width: 100%;
     position:sticky;
     top: 324px;
@@ -7082,7 +7080,7 @@ body.main .content{
     }
 
     @media screen and (max-width: 1000px){
-        top: 373px;
+        top: 368px;
     }
     @media screen and (max-width: 800px){
         top: 275px;
@@ -7112,6 +7110,7 @@ body.main .content{
         font-size: .875em;
         font-weight: bold;
         font-family: $pfont;
+        color: black;
 
         @media screen and (max-width: 430px){
             font-size: .7em;
@@ -7155,26 +7154,6 @@ body.main .content{
         //display: none;
     }
 
-}
-
-body.sitterprof{
-    header{
-        position: -webkit-sticky;
-        position: sticky;
-        top: 0px;
-        background: white;
-        z-index: 2;
-    }
-
-    footer{
-        position:sticky;
-        bottom:0;
-        z-index: 2;
-
-        p{
-            padding:17.2px;
-        }
-    }
 }
 
 

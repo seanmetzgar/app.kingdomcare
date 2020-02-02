@@ -173,220 +173,6 @@ button {
 
 /*-----colors-----*/
 
-html,
-body {
-  height: 100%;
-}
-
-body.full-screen {
-  height: 100vh;
-}
-
-body.full-screen::before {
-  display: block;
-  content: "";
-  position: fixed;
-  z-index: -1000;
-  top: 0;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  background: #1f1844 url(/images/bg-image.jpg?493d815ddb8efec8ee1a4b333f2d1627) no-repeat;
-  background-size: cover;
-  font-family: "brandon-grotesque", sans-serif;
-}
-
-body.full-screen::after {
-  display: block;
-  content: "";
-  position: fixed;
-  z-index: -999;
-  top: 0;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  background-color: #1f1844;
-  opacity: 0.9;
-}
-
-/** Checkbox **/
-
-label.checkbox-field {
-  display: block;
-  position: relative;
-  padding-left: 25px;
-  margin-bottom: 12px;
-  cursor: pointer;
-  -webkit-user-select: none;
-  -moz-user-select: none;
-  -ms-user-select: none;
-  user-select: none;
-  /* Hide the browser's default checkbox */
-}
-
-label.checkbox-field input {
-  position: absolute;
-  opacity: 0;
-  cursor: pointer;
-  height: 0;
-  width: 0;
-  /* Create a custom checkbox */
-  /* When the checkbox is checked, add a blue background */
-}
-
-label.checkbox-field input ~ .checkmark {
-  position: absolute;
-  top: 0;
-  left: 0;
-  height: 20px;
-  width: 20px;
-  border: solid 2px #bcb0c4;
-  border-top: solid 1px #bcb0c4;
-  border-left: solid 1px #bcb0c4;
-}
-
-label.checkbox-field input:checked ~ .checkmark {
-  background-color: #1f1844;
-  border-color: #1f1844;
-  /* Show the checkmark when checked */
-}
-
-label.checkbox-field input:checked ~ .checkmark::after {
-  position: absolute;
-  display: block;
-  content: "";
-  left: 6px;
-  top: 3px;
-  width: 5px;
-  height: 10px;
-  border: solid white;
-  border-width: 0 2px 2px 0;
-  -webkit-transform: rotate(45deg);
-  transform: rotate(45deg);
-}
-
-label.checkbox-field:hover input {
-  /* On mouse-over, add a grey background color */
-}
-
-label.checkbox-field:hover input ~ .checkmark {
-  border-color: #1f1844;
-}
-
-body.main .content {
-  background: #eeebf0;
-}
-
-/** START Alerts **/
-
-.alert {
-  display: -webkit-box;
-  display: flex;
-  padding: 0.4rem;
-  margin: 0 0 0.5rem;
-  line-height: 1.5rem;
-  font-family: "brandon-grotesque", sans-serif;
-  color: #58396b;
-  font-size: 0.9rem;
-  border-left: 3px solid #bcb0c4;
-  background-color: #eeebf0;
-}
-
-.alert.alert-success::before {
-  content: "";
-  float: left;
-  background-image: url(/images/pay-check.svg?4eb01368c42aadd43ce5fe61dc41cc01);
-  background-repeat: no-repeat;
-  background-size: 1rem auto;
-  width: 1rem;
-  height: 1.5rem;
-  margin-right: 0.5rem;
-}
-
-.is-invalid {
-  margin-bottom: 0 !important;
-}
-
-.invalid-feedback {
-  display: block;
-  padding: 0.4rem;
-  padding-left: 2.4rem;
-  margin-bottom: 0.5rem;
-  font-family: "brandon-grotesque", sans-serif;
-  color: #58396b;
-  font-size: 0.9rem;
-  line-height: 1.5rem;
-  font-style: italic;
-  background-color: #eeebf0;
-  position: relative;
-  z-index: 0;
-}
-
-.invalid-feedback::before {
-  content: "";
-  background-image: url(/images/reachout.svg?9947e0edb4c6e0fc12d2e32ec592c0e2);
-  background-repeat: no-repeat;
-  background-size: 1.5rem auto;
-  display: block;
-  position: absolute;
-  top: 0.4rem;
-  left: 0.4rem;
-  width: 1.5rem;
-  height: 1.5rem;
-}
-
-.invalid-feedback strong {
-  display: block;
-}
-
-.invalid-feedback.full-width-feedback {
-  flex-basis: 100%;
-}
-
-/** END Alerts **/
-
-.sr-only {
-  clip: rect(1px, 1px, 1px, 1px);
-  -webkit-clip-path: inset(50%);
-          clip-path: inset(50%);
-  height: 1px;
-  width: 1px;
-  margin: -1px;
-  overflow: hidden;
-  padding: 0;
-  position: absolute;
-}
-
-#logo #castle {
-  fill: #BCB0C4;
-  enable-background: new;
-}
-
-#logo #words {
-  fill: #1F1844;
-  enable-background: new;
-}
-
-body.full-screen #logo #castle,
-body.full-screen #logo #words {
-  fill: #FFFFFF;
-}
-
-.dashboard-wrapper {
-  padding: 37px 20px;
-}
-
-.dashboard-wrapper.admin-dash {
-  padding: 0 20px 20px 20px;
-}
-
-.btn.btn-logout i {
-  font-size: 24px;
-  line-height: 38px;
-  vertical-align: middle;
-  margin-right: 8px;
-}
-
 .select2-container {
   box-sizing: border-box;
   display: inline-block;
@@ -1008,6 +794,264 @@ body.full-screen #logo #words {
   background-position: center;
   -webkit-transform: rotate(180deg);
   transform: rotate(180deg);
+}
+
+.starrr {
+  display: inline-block;
+}
+
+.starrr a {
+  font-size: 16px;
+  padding: 0 1px;
+  cursor: pointer;
+  color: #FFD119;
+  text-decoration: none;
+}
+
+html,
+body {
+  height: 100%;
+}
+
+body.main.sticky header {
+  position: -webkit-sticky;
+  position: sticky;
+  top: 0px;
+  background: white;
+  z-index: 4;
+  box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.75);
+}
+
+body.main.sticky footer {
+  position: -webkit-sticky;
+  position: sticky;
+  bottom: 0;
+  z-index: 2;
+  box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.75);
+}
+
+body.main.sticky footer p {
+  padding: 17.2px;
+}
+
+body.full-screen {
+  height: 100vh;
+}
+
+body.full-screen::before {
+  display: block;
+  content: "";
+  position: fixed;
+  z-index: -1000;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: #1f1844 url(/images/bg-image.jpg?493d815ddb8efec8ee1a4b333f2d1627) no-repeat;
+  background-size: cover;
+  font-family: "brandon-grotesque", sans-serif;
+}
+
+body.full-screen::after {
+  display: block;
+  content: "";
+  position: fixed;
+  z-index: -999;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background-color: #1f1844;
+  opacity: 0.9;
+}
+
+/** Checkbox **/
+
+label.checkbox-field {
+  display: block;
+  position: relative;
+  padding-left: 25px;
+  margin-bottom: 12px;
+  cursor: pointer;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  /* Hide the browser's default checkbox */
+}
+
+label.checkbox-field input {
+  position: absolute;
+  opacity: 0;
+  cursor: pointer;
+  height: 0;
+  width: 0;
+  /* Create a custom checkbox */
+  /* When the checkbox is checked, add a blue background */
+}
+
+label.checkbox-field input ~ .checkmark {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 20px;
+  width: 20px;
+  border: solid 2px #bcb0c4;
+  border-top: solid 1px #bcb0c4;
+  border-left: solid 1px #bcb0c4;
+}
+
+label.checkbox-field input:checked ~ .checkmark {
+  background-color: #1f1844;
+  border-color: #1f1844;
+  /* Show the checkmark when checked */
+}
+
+label.checkbox-field input:checked ~ .checkmark::after {
+  position: absolute;
+  display: block;
+  content: "";
+  left: 6px;
+  top: 3px;
+  width: 5px;
+  height: 10px;
+  border: solid white;
+  border-width: 0 2px 2px 0;
+  -webkit-transform: rotate(45deg);
+  transform: rotate(45deg);
+}
+
+label.checkbox-field:hover input {
+  /* On mouse-over, add a grey background color */
+}
+
+label.checkbox-field:hover input ~ .checkmark {
+  border-color: #1f1844;
+}
+
+body.main .content {
+  background: #eeebf0;
+}
+
+/** START Alerts **/
+
+.alert {
+  display: -webkit-box;
+  display: flex;
+  padding: 0.4rem;
+  margin: 0 0 0.5rem;
+  line-height: 1.5rem;
+  font-family: "brandon-grotesque", sans-serif;
+  color: #58396b;
+  font-size: 0.9rem;
+  border-left: 3px solid #bcb0c4;
+  background-color: #eeebf0;
+}
+
+.alert.alert-success::before {
+  content: "";
+  float: left;
+  background-image: url(/images/pay-check.svg?4eb01368c42aadd43ce5fe61dc41cc01);
+  background-repeat: no-repeat;
+  background-size: 1rem auto;
+  width: 1rem;
+  height: 1.5rem;
+  margin-right: 0.5rem;
+}
+
+.is-invalid {
+  margin-bottom: 0 !important;
+}
+
+.invalid-feedback {
+  display: block;
+  padding: 0.4rem;
+  padding-left: 2.4rem;
+  margin-bottom: 0.5rem;
+  font-family: "brandon-grotesque", sans-serif;
+  color: #58396b;
+  font-size: 0.9rem;
+  line-height: 1.5rem;
+  font-style: italic;
+  background-color: #eeebf0;
+  position: relative;
+  z-index: 0;
+}
+
+.invalid-feedback::before {
+  content: "";
+  background-image: url(/images/reachout.svg?9947e0edb4c6e0fc12d2e32ec592c0e2);
+  background-repeat: no-repeat;
+  background-size: 1.5rem auto;
+  display: block;
+  position: absolute;
+  top: 0.4rem;
+  left: 0.4rem;
+  width: 1.5rem;
+  height: 1.5rem;
+}
+
+.invalid-feedback strong {
+  display: block;
+}
+
+.invalid-feedback.full-width-feedback {
+  flex-basis: 100%;
+}
+
+/** END Alerts **/
+
+.sr-only {
+  clip: rect(1px, 1px, 1px, 1px);
+  -webkit-clip-path: inset(50%);
+          clip-path: inset(50%);
+  height: 1px;
+  width: 1px;
+  margin: -1px;
+  overflow: hidden;
+  padding: 0;
+  position: absolute;
+}
+
+#logo #castle {
+  fill: #BCB0C4;
+  enable-background: new;
+}
+
+#logo #words {
+  fill: #1F1844;
+  enable-background: new;
+}
+
+body.full-screen #logo #castle,
+body.full-screen #logo #words {
+  fill: #FFFFFF;
+}
+
+.dashboard-wrapper {
+  padding: 37px 20px;
+}
+
+.dashboard-wrapper.admin-dash {
+  padding: 0 20px 20px 20px;
+}
+
+.btn.btn-logout i {
+  font-size: 24px;
+  line-height: 38px;
+  vertical-align: middle;
+  margin-right: 8px;
+}
+
+img.navatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+}
+
+.starrr.blur {
+  -webkit-filter: blur(10px) contrast(1.6);
+          filter: blur(10px) contrast(1.6);
 }
 
 /*-----login-----*/
@@ -8508,7 +8552,7 @@ body.main .content .chat .typehere button:focus {
 
 @media screen and (max-width: 1000px) {
   .sitter-tab {
-    top: 373px;
+    top: 368px;
   }
 }
 
@@ -8546,6 +8590,7 @@ body.main .content .chat .typehere button:focus {
   font-size: 0.875em;
   font-weight: bold;
   font-family: "brandon-grotesque", sans-serif;
+  color: black;
 }
 
 @media screen and (max-width: 430px) {
@@ -8588,25 +8633,6 @@ body.main .content .chat .typehere button:focus {
   .sitter-tab.scrolled {
     top: 229px;
   }
-}
-
-body.sitterprof header {
-  position: -webkit-sticky;
-  position: sticky;
-  top: 0px;
-  background: white;
-  z-index: 2;
-}
-
-body.sitterprof footer {
-  position: -webkit-sticky;
-  position: sticky;
-  bottom: 0;
-  z-index: 2;
-}
-
-body.sitterprof footer p {
-  padding: 17.2px;
 }
 
 .container.sitter-profile {

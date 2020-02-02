@@ -1,4 +1,4 @@
-<!doctype html>
+@php $bodyClass = isset($bodyClass) ? $bodyClass : ""; @endphp<!doctype html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
 <head>
     <meta charset="utf-8">
@@ -19,7 +19,7 @@
     <!-- Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
 </head>
-<body class="main">
+<body class="main {{$bodyClass}}">
     <div id="app">
         @include('dropins.app.headers.default')
 

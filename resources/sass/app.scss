@@ -9,14 +9,16 @@
 // Variables
 @import 'includes/variables';
 
+// Plugins
+@import 'includes/select2/core';
+@import 'includes/jquery-ui/themes/base/datepicker';
+@import '~starrr/src/starrr';
+
 // Core
 @import 'includes/core';
 @import 'includes/logo';
 @import 'includes/dashboard';
-
-// Plugins
-@import 'includes/select2/core';
-@import 'includes/jquery-ui/themes/base/datepicker';
+@import 'includes/reviews';
 
 // Bootstrap
 //@import '~bootstrap/scss/bootstrap';
