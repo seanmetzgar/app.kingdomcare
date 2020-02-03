@@ -38024,6 +38024,115 @@ S2.define('jquery.select2',[
 
 /***/ }),
 
+/***/ "./node_modules/starrr/dist/starrr.js":
+/*!********************************************!*\
+  !*** ./node_modules/starrr/dist/starrr.js ***!
+  \********************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+var slice = [].slice;
+
+(function($, window) {
+  var Starrr;
+  window.Starrr = Starrr = (function() {
+    Starrr.prototype.defaults = {
+      rating: void 0,
+      max: 5,
+      readOnly: false,
+      emptyClass: 'fa fa-star-o',
+      fullClass: 'fa fa-star',
+      change: function(e, value) {}
+    };
+
+    function Starrr($el, options) {
+      this.options = $.extend({}, this.defaults, options);
+      this.$el = $el;
+      this.createStars();
+      this.syncRating();
+      if (this.options.readOnly) {
+        return;
+      }
+      this.$el.on('mouseover.starrr', 'a', (function(_this) {
+        return function(e) {
+          return _this.syncRating(_this.getStars().index(e.currentTarget) + 1);
+        };
+      })(this));
+      this.$el.on('mouseout.starrr', (function(_this) {
+        return function() {
+          return _this.syncRating();
+        };
+      })(this));
+      this.$el.on('click.starrr', 'a', (function(_this) {
+        return function(e) {
+          e.preventDefault();
+          return _this.setRating(_this.getStars().index(e.currentTarget) + 1);
+        };
+      })(this));
+      this.$el.on('starrr:change', this.options.change);
+    }
+
+    Starrr.prototype.getStars = function() {
+      return this.$el.find('a');
+    };
+
+    Starrr.prototype.createStars = function() {
+      var j, ref, results;
+      results = [];
+      for (j = 1, ref = this.options.max; 1 <= ref ? j <= ref : j >= ref; 1 <= ref ? j++ : j--) {
+        results.push(this.$el.append("<a href='#' />"));
+      }
+      return results;
+    };
+
+    Starrr.prototype.setRating = function(rating) {
+      if (this.options.rating === rating) {
+        rating = void 0;
+      }
+      this.options.rating = rating;
+      this.syncRating();
+      return this.$el.trigger('starrr:change', rating);
+    };
+
+    Starrr.prototype.getRating = function() {
+      return this.options.rating;
+    };
+
+    Starrr.prototype.syncRating = function(rating) {
+      var $stars, i, j, ref, results;
+      rating || (rating = this.options.rating);
+      $stars = this.getStars();
+      results = [];
+      for (i = j = 1, ref = this.options.max; 1 <= ref ? j <= ref : j >= ref; i = 1 <= ref ? ++j : --j) {
+        results.push($stars.eq(i - 1).removeClass(rating >= i ? this.options.emptyClass : this.options.fullClass).addClass(rating >= i ? this.options.fullClass : this.options.emptyClass));
+      }
+      return results;
+    };
+
+    return Starrr;
+
+  })();
+  return $.fn.extend({
+    starrr: function() {
+      var args, option;
+      option = arguments[0], args = 2 <= arguments.length ? slice.call(arguments, 1) : [];
+      return this.each(function() {
+        var data;
+        data = $(this).data('starrr');
+        if (!data) {
+          $(this).data('starrr', (data = new Starrr($(this), option)));
+        }
+        if (typeof option === 'string') {
+          return data[option].apply(data, args);
+        }
+      });
+    }
+  });
+})(window.jQuery, window);
+
+
+/***/ }),
+
 /***/ "./node_modules/webpack/buildin/global.js":
 /*!***********************************!*\
   !*** (webpack)/buildin/global.js ***!
@@ -38102,6 +38211,8 @@ module.exports = function(module) {
  */
 __webpack_require__(/*! ./bootstrap */ "./resources/js/bootstrap.js");
 
+__webpack_require__(/*! ./scripts */ "./resources/js/scripts.js");
+
 /***/ }),
 
 /***/ "./resources/js/bootstrap.js":
@@ -38138,6 +38249,137 @@ window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
 __webpack_require__(/*! jquery-ui/ui/widgets/datepicker.js */ "./node_modules/jquery-ui/ui/widgets/datepicker.js");
 
 __webpack_require__(/*! select2 */ "./node_modules/select2/dist/js/select2.js");
+
+__webpack_require__(/*! starrr/dist/starrr.js */ "./node_modules/starrr/dist/starrr.js");
+
+/***/ }),
+
+/***/ "./resources/js/scripts.js":
+/*!*********************************!*\
+  !*** ./resources/js/scripts.js ***!
+  \*********************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+$(document).ready(function () {
+  $nav = $('.profile-tabs');
+  $('.datepicker').datepicker(); // Mobile Nav Overlay
+
+  $('#ham').on('click', function () {
+    $('#myNav').addClass('open');
+  });
+  $('#myNav').find('.closebtn').on('click', function () {
+    $('#myNav').removeClass('open');
+  });
+  $('.logout-link').on('click', function (e) {
+    e.preventDefault();
+    $('#logout-form').submit();
+  });
+  $('[placeholder]').each(function () {
+    var placeholder = $(this).attr('placeholder');
+    $(this).data('placeholder', placeholder);
+  }).on('focus', function () {
+    $(this).attr('placeholder', '');
+  }).on('blur', function () {
+    if ($(this).val() === '') {
+      $(this).attr('placeholder', $(this).data('placeholder'));
+    }
+  });
+  $('.select-role-form').find('.role-submit').on('click', function (e) {
+    e.preventDefault();
+    var $button = $(this);
+    var role = $button.data('role');
+    var $form = $(this).parents('form');
+    $form.find('input[name=role]').val(role);
+    $form.submit();
+  });
+  $('.starrr').each(function () {
+    var $this = $(this);
+    var rating = this.hasAttribute('data-rating') ? parseInt($this.data('rating')) : null;
+    var readOnly = $this.hasClass('read-only') ? true : false;
+
+    if (!isNaN(rating)) {
+      $this.starrr({
+        rating: rating,
+        readOnly: readOnly
+      });
+    } else {
+      $this.starr({
+        readOnly: readOnly
+      });
+    }
+  }); // Sitter Profile Search Bar Shrink
+
+  $(document).scroll(function () {
+    var $nav = $(".sprofile .left");
+    $nav.toggleClass('scrolled', $(this).scrollTop() > $(".sprofile").height());
+    $(".sitter-tab").toggleClass('scrolled', $(this).scrollTop() > $(".sprofile").height());
+    $(".search.sprofile").toggleClass('scrolled', $(this).scrollTop() > $(".sprofile").height());
+  });
+
+  if ($nav.length !== 0) {
+    var $slideLine = $(".o-block"),
+        $tablinks = $nav.find('.tablinks.underline, .push-left, .push-right'),
+        $tablinkParents = $nav.find('.activebig, .inactivebig'),
+        $currentItem = $tablinks.filter('.active');
+
+    if ($currentItem.length === 1) {
+      $slideLine.css({
+        "width": $currentItem.width(),
+        "left": $currentItem.position().left
+      });
+    }
+
+    $tablinks.on('click', function () {
+      $tablinkParent = $(this).parents('.activebig,.inactivebig');
+
+      if ($(this).is('.push-left')) {
+        $tablinkParent = $tablinkParent.prev('.activebig,.inactivebig');
+      } else if ($(this).is('.push-right')) {
+        $tablinkParent = $tablinkParent.next('.activebig,.inactivebig');
+      }
+
+      $currentTablink = $tablinkParent.find('.tablinks');
+      $slideLine.animate({
+        "width": $currentTablink.width(),
+        "left": $currentTablink.position().left
+      });
+      $tablinkParents.removeClass('activebig').addClass('inactivebig');
+      $tablinks.filter('.tablinks').removeClass('active').addClass('inactive');
+      $tablinkParent.removeClass('inactivebig').addClass('activebig');
+      $currentTablink.removeClass('inactive').addClass('active');
+    });
+  }
+
+  $('.tablinks,.push-left,.push-right').on('click', function (e) {
+    // Declare all variables
+    var city, $this; //Get jQuery version of element
+
+    $this = $(this); //Get city from
+
+    if ($this.is('a')) {
+      city = $this.attr('href');
+    } else {
+      city = $this.data('href');
+    }
+
+    city = typeof city !== "string" ? false : city.trim();
+
+    if (city !== false) {
+      if (city.lastIndexOf('#', 0) === 0) {
+        e.preventDefault();
+        $('.tabcontent').hide();
+        $('.tablinks').removeClass('active');
+        $(city).show();
+        $this.addClass('active');
+      } else {
+        return true;
+      }
+    } else {
+      e.preventDefault();
+    }
+  });
+});
 
 /***/ }),
 

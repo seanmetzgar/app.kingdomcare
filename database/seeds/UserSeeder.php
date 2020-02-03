@@ -5,7 +5,7 @@ use App\User;
 use App\Role;
 use Illuminate\Support\Facades\Hash;
 
-class UserTableSeeder extends Seeder
+class UserSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -21,10 +21,12 @@ class UserTableSeeder extends Seeder
             'last_name' => env('USERS_SEAN_LAST_NAME'),
             'email' => env('USERS_SEAN_EMAIL'),
             'password' => Hash::make(env('USERS_SEAN_PASSWORD')),
+            'api_token' => Str::random(60),
             'phone' => env('USERS_SEAN_PHONE'),
             'city' => env('USERS_SEAN_CITY'),
             'region' => env('USERS_SEAN_REGION'),
-            'dob' => env('USERS_SEAN_DOB')
+            'dob' => env('USERS_SEAN_DOB'),
+            'registration_complete' => true,
         ));
         $sean->save();
         $sean->roles()->attach($role_admin);
@@ -41,6 +43,7 @@ class UserTableSeeder extends Seeder
                 'last_name' => 'McBeta',
                 'email' => 'dev-test-sitter@kingdomcaresitters.com',
                 'password' => Hash::make(env('USERS_TEST_PASSWORD')),
+                'api_token' => Str::random(60),
                 'phone' =>'6105551212',
                 'dob' => Carbon\Carbon::createFromDate(2000,1,23)->toDateString()
             ));
@@ -52,6 +55,7 @@ class UserTableSeeder extends Seeder
                 'last_name' => 'McBeta',
                 'email' => 'dev-test-parent@kingdomcaresitters.com',
                 'password' => Hash::make(env('USERS_TEST_PASSWORD')),
+                'api_token' => Str::random(60),
                 'phone' =>'6105551212',
                 'dob' => Carbon\Carbon::createFromDate(1988,12,3)->toDateString()
             ));
@@ -63,6 +67,7 @@ class UserTableSeeder extends Seeder
                 'last_name' => 'McBeta',
                 'email' => 'dev-test-sitter-premium@kingdomcaresitters.com',
                 'password' => Hash::make(env('USERS_TEST_PASSWORD')),
+                'api_token' => Str::random(60),
                 'phone' =>'6105551212',
                 'dob' => Carbon\Carbon::createFromDate(1994,3,19)->toDateString()
             ));
@@ -75,6 +80,7 @@ class UserTableSeeder extends Seeder
                 'last_name' => 'McBeta',
                 'email' => 'dev-test-incomplete@kingdomcaresitters.com',
                 'password' => Hash::make(env('USERS_TEST_PASSWORD')),
+                'api_token' => Str::random(60),
                 'phone' =>'6105551212',
                 'dob' => Carbon\Carbon::createFromDate(1981,8,28)->toDateString()
             ));
@@ -86,6 +92,7 @@ class UserTableSeeder extends Seeder
                 'last_name' => 'McBeta',
                 'email' => 'dev-test-unknown@kingdomcaresitters.com',
                 'password' => Hash::make(env('USERS_TEST_PASSWORD')),
+                'api_token' => Str::random(60),
                 'phone' =>'6105551212',
                 'dob' => Carbon\Carbon::createFromDate(1996,6,30)->toDateString()
             ));

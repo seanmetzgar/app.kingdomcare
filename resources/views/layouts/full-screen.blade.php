@@ -20,7 +20,7 @@
     <main class="container">
         <header>
             <h1>
-                @include('dropins/logo-svg')
+                @include('dropins.svg.logo')
             </h1>
         </header>
 
@@ -38,5 +38,6 @@
     <!-- Scripts -->
     <script src="{{ asset('js/app.js') }}"></script>
     <script src="{{ asset('js/scripts.js') }}"></script>
+    @yield('extra-scripts')
 </body>
 </html>

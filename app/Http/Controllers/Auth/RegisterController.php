@@ -8,8 +8,8 @@ use App\Role;
 use Illuminate\Foundation\Auth\RegistersUsers;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
-use Ewereka\Validation\Rules\USPhoneNumber;
 use Carbon;
+use Str;
 
 class RegisterController extends Controller
 {
@@ -53,8 +53,6 @@ class RegisterController extends Controller
      */
     protected function validator(array $data)
     {
-        // TODO: If role = sitter, make dob required.
-
         $currentYear = date('Y');
         $minYear = $currentYear - 100;
         $yearsBetween = sprintf('between:%d,%d', $minYear, $currentYear);
@@ -89,7 +87,8 @@ class RegisterController extends Controller
             'dob_month' => ['required_if:role,sitter', 'numeric', 'between:1,12'],
             'dob_year' => ['required_if:role,sitter', 'numeric', $yearsBetween],
 
-            'dob' => ['date']
+            'dob' => ['date'],
+            'role' => ['required', 'string', 'regex:/^(sitter|parent)$/'],
         ]);
     }
 
@@ -113,11 +112,10 @@ class RegisterController extends Controller
             $dob = $data['dob'];
         }
 
-
-
         $user = User::create([
             'email' => $data['email'],
             'password' => Hash::make($data['password']),
+            'api_token' => Str::random(60),
 
             'first_name' => $data['first_name'],
             'last_name' => $data['last_name'],
@@ -160,7 +158,7 @@ class RegisterController extends Controller
      */
     public function showRoleRegistrationForm($role = null)
     {
-        if (is_string($role) && preg_match('/sitter|parent/', $role)) {
+        if (is_string($role) && preg_match('/'.env('REGISTER_ALLOWED_ROLES', 'sitter|parent').'/', $role)) {
             return view('auth.registerRole', ['role' => $role]);
         }
         return redirect('register');
