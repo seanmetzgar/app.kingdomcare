@@ -15,8 +15,8 @@ class CreateBookingsTable extends Migration
     {
         Schema::create('bookings', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->uuid('parent_id');
-            $table->uuid('sitter_id');
+            $table->unsignedBigInteger('parent_id');
+            $table->unsignedBigInteger('sitter_id');
             $table->timestamps();
         });
     }

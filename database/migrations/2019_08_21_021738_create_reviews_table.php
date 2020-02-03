@@ -15,8 +15,8 @@ class CreateReviewsTable extends Migration
     {
         Schema::create('reviews', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->uuid('review_by_id');
-            $table->uuid('review_for_id');
+            $table->unsignedBigInteger('review_by_id');
+            $table->unsignedBigInteger('review_for_id');
             $table->tinyInteger('rating')->unsigned();
             $table->boolean('rating_hidden')->default(false);
             $table->text('content')->nullable();

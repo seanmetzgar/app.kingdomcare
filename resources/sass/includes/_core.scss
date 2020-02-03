@@ -4,12 +4,13 @@ html, body{
 body {
     &.main.sticky {
         header{
-            position: -webkit-sticky;
-            position: sticky;
-            top: 0px;
             background: white;
             z-index: 4;
             box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.75);
+        }
+        .search {
+            position: sticky;
+            top: 0;
         }
 
         footer{

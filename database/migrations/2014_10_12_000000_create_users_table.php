@@ -14,7 +14,7 @@ class CreateUsersTable extends Migration
     public function up()
     {
         Schema::create('users', function (Blueprint $table) {
-            $table->uuid('id')->primary();
+            $table->bigIncrements('id');
             $table->string('email')->unique();
             $table->string('password');
             $table->string('api_token', 60)
@@ -34,12 +34,16 @@ class CreateUsersTable extends Migration
             // Date of Birth
             $table->date('dob')->nullable();
 
+            // Registration Complete
+            $table->boolean('registration_complete')->default(false);
+
             // Email verification field (if needed)
             $table->timestamp('email_verified_at')->nullable();
 
             // Laravel generated fields
             $table->rememberToken();
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

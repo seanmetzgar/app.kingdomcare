@@ -94,6 +94,7 @@
 /***/ (function(module, exports) {
 
 $(document).ready(function () {
+  $nav = $('.profile-tabs');
   $('.datepicker').datepicker(); // Mobile Nav Overlay
 
   $('#ham').on('click', function () {
@@ -106,13 +107,22 @@ $(document).ready(function () {
     e.preventDefault();
     $('#logout-form').submit();
   });
+  $('[placeholder]').each(function () {
+    var placeholder = $(this).attr('placeholder');
+    $(this).data('placeholder', placeholder);
+  }).on('focus', function () {
+    $(this).attr('placeholder', '');
+  }).on('blur', function () {
+    if ($(this).val() === '') {
+      $(this).attr('placeholder', $(this).data('placeholder'));
+    }
+  });
   $('.select-role-form').find('.role-submit').on('click', function (e) {
     e.preventDefault();
     var $button = $(this);
     var role = $button.data('role');
     var $form = $(this).parents('form');
     $form.find('input[name=role]').val(role);
-    console.log('hi');
     $form.submit();
   });
   $('.starrr').each(function () {
@@ -138,13 +148,53 @@ $(document).ready(function () {
     $(".sitter-tab").toggleClass('scrolled', $(this).scrollTop() > $(".sprofile").height());
     $(".search.sprofile").toggleClass('scrolled', $(this).scrollTop() > $(".sprofile").height());
   });
-  $('.tablinks').on('click', function (e) {
+
+  if ($nav.length !== 0) {
+    var $slideLine = $(".o-block"),
+        $tablinks = $nav.find('.tablinks.underline, .push-left, .push-right'),
+        $tablinkParents = $nav.find('.activebig, .inactivebig'),
+        $currentItem = $tablinks.filter('.active');
+
+    if ($currentItem.length === 1) {
+      $slideLine.css({
+        "width": $currentItem.width(),
+        "left": $currentItem.position().left
+      });
+    }
+
+    $tablinks.on('click', function () {
+      $tablinkParent = $(this).parents('.activebig,.inactivebig');
+
+      if ($(this).is('.push-left')) {
+        $tablinkParent = $tablinkParent.prev('.activebig,.inactivebig');
+      } else if ($(this).is('.push-right')) {
+        $tablinkParent = $tablinkParent.next('.activebig,.inactivebig');
+      }
+
+      $currentTablink = $tablinkParent.find('.tablinks');
+      $slideLine.animate({
+        "width": $currentTablink.width(),
+        "left": $currentTablink.position().left
+      });
+      $tablinkParents.removeClass('activebig').addClass('inactivebig');
+      $tablinks.filter('.tablinks').removeClass('active').addClass('inactive');
+      $tablinkParent.removeClass('inactivebig').addClass('activebig');
+      $currentTablink.removeClass('inactive').addClass('active');
+    });
+  }
+
+  $('.tablinks,.push-left,.push-right').on('click', function (e) {
     // Declare all variables
     var city, $this; //Get jQuery version of element
 
     $this = $(this); //Get city from
 
-    city = $this.attr('href');
+    if ($this.is('a')) {
+      city = $this.attr('href');
+    } else {
+      city = $this.data('href');
+    }
+
     city = typeof city !== "string" ? false : city.trim();
 
     if (city !== false) {

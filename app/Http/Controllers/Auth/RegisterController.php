@@ -158,7 +158,7 @@ class RegisterController extends Controller
      */
     public function showRoleRegistrationForm($role = null)
     {
-        if (is_string($role) && preg_match('/sitter|parent/', $role)) {
+        if (is_string($role) && preg_match('/'.env('REGISTER_ALLOWED_ROLES', 'sitter|parent').'/', $role)) {
             return view('auth.registerRole', ['role' => $role]);
         }
         return redirect('register');

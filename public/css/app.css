@@ -814,12 +814,15 @@ body {
 }
 
 body.main.sticky header {
-  position: -webkit-sticky;
-  position: sticky;
-  top: 0px;
   background: white;
   z-index: 4;
   box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.75);
+}
+
+body.main.sticky .search {
+  position: -webkit-sticky;
+  position: sticky;
+  top: 0;
 }
 
 body.main.sticky footer {
@@ -1745,8 +1748,10 @@ input:focus:-ms-input-placeholder {
   color: #1f1844;
 }
 
-.loginOptions.register-form [type=radio],
-.clone [type=radio] {
+.loginOptions.register-form input[type=radio],
+.loginOptions.register-form input.imagetoggle,
+.clone input[type=radio],
+.clone input.imagetoggle {
   position: absolute;
   opacity: 0;
   width: 0;
@@ -1754,7 +1759,9 @@ input:focus:-ms-input-placeholder {
 }
 
 .loginOptions.register-form input[type=radio] + img,
-.clone input[type=radio] + img {
+.loginOptions.register-form input.imagetoggle + img,
+.clone input[type=radio] + img,
+.clone input.imagetoggle + img {
   cursor: pointer;
 }
 
@@ -1764,7 +1771,9 @@ input:focus:-ms-input-placeholder {
 }
 
 .loginOptions.register-form input[type=radio] + .toddler-img,
-.clone input[type=radio] + .toddler-img {
+.loginOptions.register-form input.imagetoggle + .toddler-img,
+.clone input[type=radio] + .toddler-img,
+.clone input.imagetoggle + .toddler-img {
   content: "";
   background-image: url(/images/toddler-icon.svg?d4c90b11ff2e72c91a28669a8e690dd1);
   width: 70px;
@@ -1773,14 +1782,18 @@ input:focus:-ms-input-placeholder {
 }
 
 .loginOptions.register-form input[type=radio] + .toddler-img:hover,
-.clone input[type=radio] + .toddler-img:hover {
+.loginOptions.register-form input.imagetoggle + .toddler-img:hover,
+.clone input[type=radio] + .toddler-img:hover,
+.clone input.imagetoggle + .toddler-img:hover {
   background-image: url(/images/toddler-icon-hover.svg?a4fa2f698641ca9117f5f8861684800a);
   -webkit-transition-duration: 0.3s;
           transition-duration: 0.3s;
 }
 
 .loginOptions.register-form input[type=radio] + .school-age-img,
-.clone input[type=radio] + .school-age-img {
+.loginOptions.register-form input.imagetoggle + .school-age-img,
+.clone input[type=radio] + .school-age-img,
+.clone input.imagetoggle + .school-age-img {
   content: "";
   background-image: url(/images/school-age-icon.svg?1395c1719c402646385a08eb5a8e4bce);
   width: 70px;
@@ -1789,19 +1802,25 @@ input:focus:-ms-input-placeholder {
 }
 
 .loginOptions.register-form input[type=radio] + .school-age-img:hover,
-.clone input[type=radio] + .school-age-img:hover {
+.loginOptions.register-form input.imagetoggle + .school-age-img:hover,
+.clone input[type=radio] + .school-age-img:hover,
+.clone input.imagetoggle + .school-age-img:hover {
   background-image: url(/images/school-age-icon-hover.svg?0247dd21d690ca6dfcac23d0c0d1802f);
   -webkit-transition-duration: 0.3s;
           transition-duration: 0.3s;
 }
 
 .loginOptions.register-form input[type=radio]:checked + svg,
-.clone input[type=radio]:checked + svg {
+.loginOptions.register-form input.imagetoggle:checked + svg,
+.clone input[type=radio]:checked + svg,
+.clone input.imagetoggle:checked + svg {
   fill: #1f1844;
 }
 
 .loginOptions.register-form input[type=radio]:checked + .toddler-img,
-.clone input[type=radio]:checked + .toddler-img {
+.loginOptions.register-form input.imagetoggle:checked + .toddler-img,
+.clone input[type=radio]:checked + .toddler-img,
+.clone input.imagetoggle:checked + .toddler-img {
   content: "";
   background-image: url(/images/toddler-icon-click.svg?655e354d770b28d154fd612f454e2a4a);
   width: 70px;
@@ -1810,7 +1829,9 @@ input:focus:-ms-input-placeholder {
 }
 
 .loginOptions.register-form input[type=radio]:checked + .school-age-img,
-.clone input[type=radio]:checked + .school-age-img {
+.loginOptions.register-form input.imagetoggle:checked + .school-age-img,
+.clone input[type=radio]:checked + .school-age-img,
+.clone input.imagetoggle:checked + .school-age-img {
   content: "";
   background-image: url(/images/school-age-icon-click.svg?84ba295c0e75de3698bdeb9a2356ca58);
   width: 70px;
@@ -6679,6 +6700,7 @@ body.main .content .chat .typehere button:focus {
 @media screen and (max-width: 600px) {
   .profile-info .profile-tabs .activebig {
     width: 100%;
+    border-bottom-color: #f4ba46;
   }
 }
 
@@ -6728,6 +6750,12 @@ body.main .content .chat .typehere button:focus {
   margin: 0;
   top: 68px;
   z-index: 0;
+}
+
+@media screen and (max-width: 800px) and (min-width: 601px) {
+  .profile-info hr {
+    top: 63px;
+  }
 }
 
 .profile-info .pinfo.left {
@@ -6875,27 +6903,65 @@ body.main .content .chat .typehere button:focus {
 
 .profile-info .pinfo.right {
   width: 65%;
+}
+
+.profile-info .pinfo.full {
+  width: 100%;
+  clear: both;
+}
+
+.profile-info .pinfo.right,
+.profile-info .pinfo.full {
   margin-top: 4%;
 }
 
+.profile-info .pinfo.right h2,
+.profile-info .pinfo.full h2 {
+  text-align: left;
+  clear: both;
+  margin: 0;
+  padding: 1.4em 0 0;
+}
+
 @media screen and (max-width: 870px) {
-  .profile-info .pinfo.right {
+  .profile-info .pinfo.right,
+  .profile-info .pinfo.full {
     float: none;
     width: 100%;
   }
 }
 
-.profile-info .pinfo.right input {
+.profile-info .pinfo.right input,
+.profile-info .pinfo.full input {
   width: 100%;
 }
 
-.profile-info .pinfo.right label {
+.profile-info .pinfo.right label,
+.profile-info .pinfo.full label {
   display: block;
   margin-top: 20px;
   margin-bottom: 5px;
 }
 
-.profile-info .pinfo.right input {
+.profile-info .pinfo.right textarea,
+.profile-info .pinfo.full textarea {
+  width: 100%;
+  height: 240px;
+  display: block;
+  border: solid 3px #bcb0c4;
+  border-top: solid 1px #bcb0c4;
+  border-left: solid 1px #bcb0c4;
+  padding: 10px 17px;
+  color: #4e4e4e;
+  box-sizing: border-box;
+  font-size: 1em;
+  font-family: "brandon-grotesque", sans-serif;
+  margin-bottom: 5%;
+  margin-top: 0;
+}
+
+.profile-info .pinfo.right input,
+.profile-info .pinfo.full input {
   width: 100%;
   height: 50px;
   display: block;
@@ -6910,52 +6976,70 @@ body.main .content .chat .typehere button:focus {
   padding-left: 10px;
 }
 
-.profile-info .pinfo.right input:focus {
+.profile-info .pinfo.right input:focus,
+.profile-info .pinfo.full input:focus {
   outline: none;
   border: solid 3px #1f1844;
   border-top: solid 1px #1f1844;
   border-left: solid 1px #1f1844;
 }
 
-.profile-info .pinfo.right input::-webkit-input-placeholder {
+.profile-info .pinfo.right input::-webkit-input-placeholder, .profile-info .pinfo.full input::-webkit-input-placeholder {
   font-size: 1em;
 }
 
-.profile-info .pinfo.right input::-moz-placeholder {
+.profile-info .pinfo.right input::-moz-placeholder, .profile-info .pinfo.full input::-moz-placeholder {
   font-size: 1em;
 }
 
-.profile-info .pinfo.right input:-ms-input-placeholder {
+.profile-info .pinfo.right input:-ms-input-placeholder, .profile-info .pinfo.full input:-ms-input-placeholder {
   font-size: 1em;
 }
 
-.profile-info .pinfo.right input::-ms-input-placeholder {
+.profile-info .pinfo.right input::-ms-input-placeholder, .profile-info .pinfo.full input::-ms-input-placeholder {
   font-size: 1em;
 }
 
-.profile-info .pinfo.right input::placeholder {
+.profile-info .pinfo.right input::placeholder,
+.profile-info .pinfo.full input::placeholder {
   font-size: 1em;
 }
 
-.profile-info .pinfo.right .profile-infoleft {
+.profile-info .pinfo.right .register-child .cAge input[type=checkbox],
+.profile-info .pinfo.right .register-child .cAge input[type=radio],
+.profile-info .pinfo.full .register-child .cAge input[type=checkbox],
+.profile-info .pinfo.full .register-child .cAge input[type=radio] {
+  display: none;
+}
+
+.profile-info .pinfo.right .register-child .cAge label,
+.profile-info .pinfo.full .register-child .cAge label {
+  margin: 0;
+}
+
+.profile-info .pinfo.right .profile-infoleft,
+.profile-info .pinfo.full .profile-infoleft {
   float: left;
   width: 49%;
   margin-bottom: 2%;
 }
 
-.profile-info .pinfo.right .profile-inforight {
+.profile-info .pinfo.right .profile-inforight,
+.profile-info .pinfo.full .profile-inforight {
   float: right;
   width: 48%;
   margin-bottom: 2%;
 }
 
-.profile-info .pinfo.right .date-wrapper {
+.profile-info .pinfo.right .date-wrapper,
+.profile-info .pinfo.full .date-wrapper {
   position: relative;
   height: 50px;
   margin-bottom: 2%;
 }
 
-.profile-info .pinfo.right .date-wrapper::after {
+.profile-info .pinfo.right .date-wrapper::after,
+.profile-info .pinfo.full .date-wrapper::after {
   content: "";
   background-image: url(/images/calendar.svg?de3222bd54cfcdd6eeb145068520f77d);
   background-size: cover;
@@ -6969,32 +7053,37 @@ body.main .content .chat .typehere button:focus {
   pointer-events: none;
 }
 
-.profile-info .pinfo.right .citystate1 {
+.profile-info .pinfo.right .citystate1,
+.profile-info .pinfo.full .citystate1 {
   width: 80%;
   margin-bottom: 2%;
 }
 
 @media screen and (max-width: 600px) {
-  .profile-info .pinfo.right .citystate1 {
+  .profile-info .pinfo.right .citystate1,
+  .profile-info .pinfo.full .citystate1 {
     width: 74%;
     margin-top: 7px;
   }
 }
 
-.profile-info .pinfo.right .citystate2 {
+.profile-info .pinfo.right .citystate2,
+.profile-info .pinfo.full .citystate2 {
   width: 16%;
   height: 40px;
   margin-bottom: 2%;
 }
 
 @media screen and (max-width: 600px) {
-  .profile-info .pinfo.right .citystate2 {
+  .profile-info .pinfo.right .citystate2,
+  .profile-info .pinfo.full .citystate2 {
     width: 22%;
     margin-top: 12px;
   }
 }
 
-.profile-info .pinfo.right .citystate2 select {
+.profile-info .pinfo.right .citystate2 select,
+.profile-info .pinfo.full .citystate2 select {
   height: 50px;
   border: solid 3px #bcb0c4;
   border-top: solid 1px #bcb0c4;
@@ -7019,7 +7108,8 @@ body.main .content .chat .typehere button:focus {
   font-family: "brandon-grotesque", sans-serif;
 }
 
-.profile-info .pinfo.right .citystate2 select:focus {
+.profile-info .pinfo.right .citystate2 select:focus,
+.profile-info .pinfo.full .citystate2 select:focus {
   outline: none;
   border: solid 3px #1f1844;
   border-top: solid 1px #1f1844;
@@ -7027,12 +7117,14 @@ body.main .content .chat .typehere button:focus {
   height: auto;
 }
 
-.profile-info .pinfo.right .citystate2 .select-wrapper {
+.profile-info .pinfo.right .citystate2 .select-wrapper,
+.profile-info .pinfo.full .citystate2 .select-wrapper {
   position: relative;
   height: 50px;
 }
 
-.profile-info .pinfo.right .citystate2 .select-wrapper:after {
+.profile-info .pinfo.right .citystate2 .select-wrapper:after,
+.profile-info .pinfo.full .citystate2 .select-wrapper:after {
   font-family: iconmonstr-iconic-font;
   content: "\E013";
   font-size: 9px;
@@ -7044,15 +7136,18 @@ body.main .content .chat .typehere button:focus {
   z-index: 0;
 }
 
-.profile-info .pinfo.right .citystate2 select::-ms-expand {
+.profile-info .pinfo.right .citystate2 select::-ms-expand,
+.profile-info .pinfo.full .citystate2 select::-ms-expand {
   display: none;
 }
 
-.profile-info .pinfo.right .citystate2 option {
+.profile-info .pinfo.right .citystate2 option,
+.profile-info .pinfo.full .citystate2 option {
   height: 50px;
 }
 
-.profile-info .pinfo.right .btn-container {
+.profile-info .pinfo.right .btn-container,
+.profile-info .pinfo.full .btn-container {
   width: 100%;
   float: right;
   text-align: right;
@@ -7060,14 +7155,17 @@ body.main .content .chat .typehere button:focus {
 }
 
 @media screen and (max-width: 740px) {
-  .profile-info .pinfo.right .btn-container {
+  .profile-info .pinfo.right .btn-container,
+  .profile-info .pinfo.full .btn-container {
     width: 100%;
     text-align: center;
   }
 }
 
 .profile-info .pinfo.right .btn-container .btn,
-.profile-info .pinfo.right .btn-container .btn-outline {
+.profile-info .pinfo.right .btn-container .btn-outline,
+.profile-info .pinfo.full .btn-container .btn,
+.profile-info .pinfo.full .btn-container .btn-outline {
   width: 35%;
   height: 40px;
   padding: 0 2em;
@@ -7076,7 +7174,9 @@ body.main .content .chat .typehere button:focus {
 
 @media screen and (max-width: 600px) {
   .profile-info .pinfo.right .btn-container .btn,
-  .profile-info .pinfo.right .btn-container .btn-outline {
+  .profile-info .pinfo.right .btn-container .btn-outline,
+  .profile-info .pinfo.full .btn-container .btn,
+  .profile-info .pinfo.full .btn-container .btn-outline {
     width: 70%;
     margin-bottom: 2%;
   }
@@ -8189,18 +8289,9 @@ body.main .content .chat .typehere button:focus {
   }
 }
 
-@media screen and (max-width: 600px) {
-  .sprofile.search.scrolled {
-    height: 155px;
-  }
-}
-
 .sprofile.search {
   -webkit-transition: all 250ms ease-in-out;
   transition: all 250ms ease-in-out;
-  position: -webkit-sticky;
-  position: sticky;
-  top: 116px;
   z-index: 3;
 }
 
@@ -8308,7 +8399,7 @@ body.main .content .chat .typehere button:focus {
 @media screen and (max-width: 600px) {
   .sprofile.search .left {
     width: 100%;
-    height: 178px;
+    height: 119px;
   }
 }
 
@@ -8444,7 +8535,7 @@ body.main .content .chat .typehere button:focus {
 
 .sprofile.search .left.scrolled .img-wrapper {
   position: relative;
-  width: 11%;
+  width: 75px;
   display: inline-block;
   margin: 0;
 }
@@ -8483,7 +8574,7 @@ body.main .content .chat .typehere button:focus {
 @media screen and (max-width: 800px) {
   .sprofile.search .left.scrolled .img-wrapper {
     position: relative;
-    width: 17%;
+    width: 64px;
     display: inline-block;
   }
 
@@ -8534,12 +8625,8 @@ body.main .content .chat .typehere button:focus {
 
 .sitter-tab {
   width: 100%;
-  position: -webkit-sticky;
-  position: sticky;
-  top: 324px;
   margin: auto;
   background: white;
-  z-index: 2;
   -webkit-transition: all 250ms ease-in-out;
   transition: all 250ms ease-in-out;
 }
@@ -8619,20 +8706,8 @@ body.main .content .chat .typehere button:focus {
   }
 }
 
-.sitter-tab.scrolled {
-  top: 235px;
-}
-
-@media screen and (max-width: 800px) {
-  .sitter-tab.scrolled {
-    top: 233px;
-  }
-}
-
-@media screen and (max-width: 600px) {
-  .sitter-tab.scrolled {
-    top: 229px;
-  }
+.sitter-tab.scrolled .leftspace {
+  width: 0;
 }
 
 .container.sitter-profile {
@@ -12472,5 +12547,13 @@ select:-webkit-autofill:focus {
   border-top-width: 0;
   border-left-width: 1px;
   background-color: #58396b;
+}
+
+input.money {
+  padding-left: 2em;
+}
+
+input.money::before {
+  content: "$";
 }
 

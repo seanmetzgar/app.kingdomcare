@@ -2,14 +2,14 @@
 
 namespace App;
 
-use App\Traits\UsesUUID;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Kodeine\Metable\Metable;
 
 class User extends Authenticatable
 {
-    use Notifiable, UsesUUID;
+    use Notifiable, Metable;
 
     /**
      * The attributes that are mass assignable.
@@ -29,7 +29,8 @@ class User extends Authenticatable
         'city',
         'region',
         'phone',
-        'dob'
+        'dob',
+        'registration_complete',
     ];
 
     /**

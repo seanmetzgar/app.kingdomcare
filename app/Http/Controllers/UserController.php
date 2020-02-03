@@ -22,6 +22,23 @@ class UserController extends Controller
         $this->middleware('auth');
     }
 
+    public function continueRegistration(Request $request) {
+        if (Auth::check()) {
+            $user = Auth::user();
+
+            if (!$user->registration_complete) {
+                if ($user->hasRole('sitter')) {
+                    return view('auth.register.next.sitter');
+                } elseif ($user->hasRole('parent') && $user->hasRole('incomplete')) {
+                    return view('auth.register.next.parent');
+                }
+            } else {
+                return redirect()->route('dashboard');
+            }
+        }
+        abort(403);
+    }
+
     public function selectRole(Request $request, User $user) {
         if ($user->is(Auth::user()) && $user->hasRole('unknown')) {
             $role = $request->role;
@@ -80,6 +97,45 @@ class UserController extends Controller
         } else { abort(403); }
     }
 
+    public function update(Request $request, User $user = null) {
+        if (verify_modelkey_field($request, $user)) {
+            if ($user->hasRole('sitter')) {
+                // Experience Description
+                $experience_description = $request->input('experience_description');
+                $user->experience_description = $experience_description ?
+                    $experience_description : $user->experience_description;
+
+                // Experience Fields
+                $experience_infant = $request->input('experience_infant');
+                $user->experience_infant = $experience_infant ? true : false;
+                $experience_toddler = $request->input('experience_toddler');
+                $user->experience_toddler = $experience_toddler ? true : false;
+                $experience_school_age = $request->input('experience_school_age');
+                $user->experience_school_age = $experience_school_age ? true : false;
+
+                //Video Resume
+                $video_resume = $request->input('video_resume');
+                $user->video_resume = $video_resume ?
+                    $video_resume : $user->video_resume;
+
+
+            }
+
+            // Journey with Christ
+            $journey = $request->input('journey');
+            $user->journey = $journey ?
+                $journey : $user->journey;
+
+            if ($request->input('registration_complete') === "1") {
+                $user->registration_complete = true;
+            }
+
+            $user->save();
+            return redirect()->route('dashboard');
+        }
+
+        abort(403);
+    }
 
 
 }

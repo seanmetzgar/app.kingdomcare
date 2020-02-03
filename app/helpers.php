@@ -2,6 +2,9 @@
 
 use Carbon\Carbon;
 use Illuminate\Support\Str;
+use Hashids\Hashids;
+use Illuminate\Support\HtmlString;
+use Illuminate\Http\Request;
 
 class TimeRestraints {
     public $start = null;
@@ -11,6 +14,97 @@ class TimeRestraints {
         $this->start = $start;
         $this->end = $end;
     }
+}
+
+function startsWith($haystack, $needle)
+{
+    $length = strlen($needle);
+    return (substr($haystack, 0, $length) === $needle);
+}
+
+function endsWith($haystack, $needle)
+{
+    $length = strlen($needle);
+    if ($length == 0) {
+        return true;
+    }
+
+    return (substr($haystack, -$length) === $needle);
+}
+
+function trimPrefix($string, $prefix) {
+    if (substr($string, 0, strlen($prefix)) == $prefix) {
+        $string = substr($string, strlen($prefix));
+    }
+
+    return $string;
+}
+
+function newHasher() {
+    return new Hashids(env('HASHIDS_SALT', 'Sean Metzgar was here'), env('HASHIDS_PAD', 10));
+}
+
+function verifyModelHash($hash, $model) {
+    $hasher = newHasher();
+
+    $verified = false;
+    $decoded = null;
+
+    if (is_string($hash)) {
+        $decoded = $hasher->decode($hash);
+
+        if (is_array($decoded) && count($decoded) === 1) {
+            if ($model->id === $decoded[0]) {
+                $verified = true;
+            }
+        }
+    }
+
+    return $verified;
+}
+
+function verifyUserHash($hash, User $user = null) {
+    if ($user === null && is_string($hash)) {
+        if (Auth::check()) {
+            $user = Auth::user();
+        } else {
+            return false;
+        }
+    }
+
+    return verifyModelHash($hash, $user);
+}
+
+function getUserHash(User $user = null) {
+    if ($user === null) {
+        if (Auth::check()) {
+            $user = Auth::user();
+        } else {
+            return '';
+        }
+    }
+
+    return getModelHash($user);
+}
+
+function getModelHash($model) {
+    $hasher = newHasher();
+    return $hasher->encode($model->id);
+}
+
+function modelkey_field($model) {
+    $hash = getModelHash($model);
+    $html = sprintf('<input type="hidden" name="_modelkey" value="%s">', $hash);
+    return new HtmlString($html);
+}
+
+function verify_modelkey_field(Request $request, $model) {
+    $hash = $request->_modelkey;
+    return verifyModelHash($hash, $model);
+}
+
+function meta_prefix() {
+    return env('MODEL_PREFIX', '_meta_');
 }
 
 function getTimeRestraints($timeRestraint) {

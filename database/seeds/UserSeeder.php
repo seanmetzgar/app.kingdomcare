@@ -25,7 +25,8 @@ class UserSeeder extends Seeder
             'phone' => env('USERS_SEAN_PHONE'),
             'city' => env('USERS_SEAN_CITY'),
             'region' => env('USERS_SEAN_REGION'),
-            'dob' => env('USERS_SEAN_DOB')
+            'dob' => env('USERS_SEAN_DOB'),
+            'registration_complete' => true,
         ));
         $sean->save();
         $sean->roles()->attach($role_admin);

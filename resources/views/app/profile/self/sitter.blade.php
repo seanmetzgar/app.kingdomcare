@@ -9,8 +9,8 @@
                 </div>
                 <div class="sitterinfo">
                     <h2>{{ $profile->first_name }} {{ $profile->last_name }}</h2>
-                    @if (!empty($profile->city) || !empty($profile->region))
-                    <p class="loc">{{ $profile->address_city }}, {{ $profile->address_region }}</p><br>
+                    @if ($profile->city || $profile->region)
+                    <p class="loc">{{ $profile->city }}, {{ $profile->region }}</p><br>
                     @endif
                     @if ($profile->averageRating !== null)
                     <div class="starrr read-only" data-rating="{{ $profile->averageRating }}"></div>
@@ -24,15 +24,16 @@
             </div>
             <div class="space"></div>
         </div><!--container-->
-    </div><!--search-->
-    <div class="sitter-tab">
-        <div class="tab-contain">
-            <div class="leftspace"></div><!--space-->
-            <a class="tablinks active" href="#About">Profile</a>
-            <a class="tablinks" href="#Reviews">Reviews</a>
-            <a class="tablinks" href="http://google.com" target="_blank">Reviews</a>
+        <div class="sitter-tab">
+            <div class="tab-contain">
+                <div class="leftspace"></div><!--space-->
+                <a class="tablinks active" href="#About">Profile</a>
+                <a class="tablinks" href="#Reviews">Reviews</a>
+                <a class="tablinks" href="{{ route('profile.self.edit') }}">Edit</a>
+            </div>
         </div>
-    </div>
+    </div><!--search-->
+
 @endsection
 
 @section('content')

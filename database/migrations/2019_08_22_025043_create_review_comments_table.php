@@ -15,13 +15,19 @@ class CreateReviewCommentsTable extends Migration
     {
         Schema::create('review_comments', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->bigInteger('review_id')->unsigned();
+            $table->unsignedBigInteger('review_id');
+            $table->unsignedBigInteger('user_id');
             $table->text('comment')->nullable();
             $table->timestamps();
 
             $table->foreign('review_id')
                 ->references('id')
                 ->on('reviews')
+                ->onDelete('cascade');
+
+            $table->foreign('user_id')
+                ->references('id')
+                ->on('users')
                 ->onDelete('cascade');
         });
     }

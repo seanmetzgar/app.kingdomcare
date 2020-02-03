@@ -1,3 +1,4 @@
+@php $stateValue = isset($stateValue) ? $stateValue : old('region'); @endphp
 {{ Form::select('region', array(
     '' => '&mdash;',
     'AL' => 'AL',
@@ -51,7 +52,7 @@
     'WI' => 'WI',
     'WV' => 'WV',
     'WY' => 'WY',
-) , old('region'), array(
+) , $stateValue, array(
     'class' => 'select',
     'size' => 1,
     'onmousedown' => 'if(this.options.length>3){this.size=3;}',

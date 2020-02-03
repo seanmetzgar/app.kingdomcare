@@ -66,6 +66,10 @@ form {
                 }
             }
 
+            textarea {
+
+            }
+
 
             &::-ms-expand{
                 display: none;
@@ -191,4 +195,11 @@ select:-webkit-autofill:focus {
     border-top-width: 0;
     border-left-width: 1px;
     background-color: $mpurple;
+}
+
+input.money {
+    &::before {
+        content: '$';
+    }
+    padding-left: 2em;
 }
