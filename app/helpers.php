@@ -107,6 +107,30 @@ function meta_prefix() {
     return env('MODEL_PREFIX', '_meta_');
 }
 
+function checkboxBoolean($value) {
+    $rVal = null;
+    if (isset($value) && $value !== null) {
+        switch($value) {
+            case "1":
+            case 1:
+            case "ok":
+            case "on":
+            case "true":
+                $rVal = true;
+                break;
+            case "0":
+            case 0:
+            case "off":
+            case "false":
+                $rVal = false;
+                break;
+            default:
+                $rVal = null;
+        }
+    }
+    return $rVal;
+}
+
 function getTimeRestraints($timeRestraint) {
     $timeRestraint = (is_string($timeRestraint) && strlen($timeRestraint) > 0) ? $timeRestraint : 'today';
     $now = Carbon::now();

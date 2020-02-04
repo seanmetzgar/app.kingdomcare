@@ -5420,7 +5420,7 @@ body.main .content{
 
         .btn-con{
             position:relative;
-            z-index: 300;
+            z-index: 99;
             width: 60px;
         }
         button{
@@ -5600,7 +5600,7 @@ body.main .content{
             margin-top: 0;
         }
 
-        input{
+        input:not([type=radio]):not([type=checkbox]) {
             width: 100%;
             height: 50px;
             display: block;
@@ -5613,10 +5613,10 @@ body.main .content{
             font-size: 1em;
             font-family:$pfont;
             padding-left:10px;
-
         }
 
-        input:focus{
+        input:not([type=radio]):not([type=checkbox]):focus,
+        .money-wrapper.focus {
             outline: none;
             border:solid 3px $dpurple;
             border-top: solid 1px $dpurple;
@@ -5643,12 +5643,24 @@ body.main .content{
             float: left;
             width: 49%;
             margin-bottom: 2%;
+
+            @media screen and (max-width: 800px) {
+                width: 100%;
+                float: none;
+                clear: both;
+            }
         }
 
         .profile-inforight{
             float: right;
             width: 48%;
             margin-bottom: 2%;
+
+            @media screen and (max-width: 800px) {
+                width: 100%;
+                float: none;
+                clear: both;
+            }
         }
 
         .date-wrapper {
