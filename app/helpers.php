@@ -107,6 +107,57 @@ function meta_prefix() {
     return env('MODEL_PREFIX', '_meta_');
 }
 
+function checkboxBoolean($value) {
+    $rVal = null;
+    if (isset($value) && $value !== null) {
+        switch($value) {
+            case "1":
+            case 1:
+            case "ok":
+            case "on":
+            case "true":
+                $rVal = true;
+                break;
+            case "0":
+            case 0:
+            case "off":
+            case "false":
+                $rVal = false;
+                break;
+            default:
+                $rVal = null;
+        }
+    }
+    return $rVal;
+}
+
+function buildChildrenArray($children, bool $json = false) {
+    $childrenArray = false;
+    if (isset($children) && is_array($children)) {
+        $childrenArray = [];
+        foreach ($children as $child) {
+            if (array_key_exists("name", $child) && array_key_exists("age", $child)) {
+                if (is_string($child["name"]) && strlen($child["name"]) > 0
+                    && in_array($child["age"], array("infant", "toddler", "school_age"))) {
+                    $childObject = new stdClass();
+                    $childObject->name = $child["name"];
+                    $childObject->age = $child["age"];
+
+                    array_push($childrenArray, $childObject);
+
+                    $childObject = null;
+                }
+            }
+        }
+    }
+
+    if (is_array($childrenArray) && $json) {
+        $childrenArray = json_encode($childrenArray);
+    }
+
+    return $childrenArray;
+}
+
 function getTimeRestraints($timeRestraint) {
     $timeRestraint = (is_string($timeRestraint) && strlen($timeRestraint) > 0) ? $timeRestraint : 'today';
     $now = Carbon::now();

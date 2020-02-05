@@ -126,4 +126,17 @@ $(document).ready(function () {
             }
         } else { e.preventDefault(); }
     });
+
+    $('input.money').on('change', function() {
+        var value = $(this).val();
+        console.log("hi");
+        value = parseFloat(value);
+        if (!isNaN(value)) {
+            value = value.toFixed(2);
+        } else {
+            value = "";
+        }
+        $(this).val(value);
+
+    })
 });

@@ -14,17 +14,13 @@
 @import 'includes/jquery-ui/themes/base/datepicker';
 @import '~starrr/src/starrr';
 
-// Core
-@import 'includes/core';
-@import 'includes/logo';
-@import 'includes/dashboard';
-@import 'includes/reviews';
-
-// Bootstrap
-//@import '~bootstrap/scss/bootstrap';
-
 // Hammer
 @import 'includes/hammer';
 
 // Sean
+@import 'includes/core';
+@import 'includes/logo';
+@import 'includes/dashboard';
+@import 'includes/reviews';
 @import 'includes/forms';
+@import 'includes/_dncalendar';

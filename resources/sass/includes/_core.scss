@@ -5,12 +5,13 @@ body {
     &.main.sticky {
         header{
             background: white;
-            z-index: 4;
+            z-index: 101;
             box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.75);
         }
         .search {
             position: sticky;
             top: 0;
+            z-index: 100;
         }
 
         footer{

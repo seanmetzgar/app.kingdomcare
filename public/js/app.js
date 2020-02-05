@@ -1851,6 +1851,620 @@ module.exports = function isBuffer (obj) {
 
 /***/ }),
 
+/***/ "./node_modules/jquery-mask-plugin/dist/jquery.mask.js":
+/*!*************************************************************!*\
+  !*** ./node_modules/jquery-mask-plugin/dist/jquery.mask.js ***!
+  \*************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/**
+ * jquery.mask.js
+ * @version: v1.14.16
+ * @author: Igor Escobar
+ *
+ * Created by Igor Escobar on 2012-03-10. Please report any bug at github.com/igorescobar/jQuery-Mask-Plugin
+ *
+ * Copyright (c) 2012 Igor Escobar http://igorescobar.com
+ *
+ * The MIT License (http://www.opensource.org/licenses/mit-license.php)
+ *
+ * Permission is hereby granted, free of charge, to any person
+ * obtaining a copy of this software and associated documentation
+ * files (the "Software"), to deal in the Software without
+ * restriction, including without limitation the rights to use,
+ * copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the
+ * Software is furnished to do so, subject to the following
+ * conditions:
+ *
+ * The above copyright notice and this permission notice shall be
+ * included in all copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+ * EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES
+ * OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+ * NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT
+ * HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,
+ * WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
+ * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
+ * OTHER DEALINGS IN THE SOFTWARE.
+ */
+
+/* jshint laxbreak: true */
+/* jshint maxcomplexity:17 */
+/* global define */
+
+// UMD (Universal Module Definition) patterns for JavaScript modules that work everywhere.
+// https://github.com/umdjs/umd/blob/master/templates/jqueryPlugin.js
+(function (factory, jQuery, Zepto) {
+
+    if (true) {
+        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(/*! jquery */ "./node_modules/jquery/dist/jquery.js")], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory),
+				__WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ?
+				(__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__),
+				__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
+    } else {}
+
+}(function ($) {
+    'use strict';
+
+    var Mask = function (el, mask, options) {
+
+        var p = {
+            invalid: [],
+            getCaret: function () {
+                try {
+                    var sel,
+                        pos = 0,
+                        ctrl = el.get(0),
+                        dSel = document.selection,
+                        cSelStart = ctrl.selectionStart;
+
+                    // IE Support
+                    if (dSel && navigator.appVersion.indexOf('MSIE 10') === -1) {
+                        sel = dSel.createRange();
+                        sel.moveStart('character', -p.val().length);
+                        pos = sel.text.length;
+                    }
+                    // Firefox support
+                    else if (cSelStart || cSelStart === '0') {
+                        pos = cSelStart;
+                    }
+
+                    return pos;
+                } catch (e) {}
+            },
+            setCaret: function(pos) {
+                try {
+                    if (el.is(':focus')) {
+                        var range, ctrl = el.get(0);
+
+                        // Firefox, WebKit, etc..
+                        if (ctrl.setSelectionRange) {
+                            ctrl.setSelectionRange(pos, pos);
+                        } else { // IE
+                            range = ctrl.createTextRange();
+                            range.collapse(true);
+                            range.moveEnd('character', pos);
+                            range.moveStart('character', pos);
+                            range.select();
+                        }
+                    }
+                } catch (e) {}
+            },
+            events: function() {
+                el
+                .on('keydown.mask', function(e) {
+                    el.data('mask-keycode', e.keyCode || e.which);
+                    el.data('mask-previus-value', el.val());
+                    el.data('mask-previus-caret-pos', p.getCaret());
+                    p.maskDigitPosMapOld = p.maskDigitPosMap;
+                })
+                .on($.jMaskGlobals.useInput ? 'input.mask' : 'keyup.mask', p.behaviour)
+                .on('paste.mask drop.mask', function() {
+                    setTimeout(function() {
+                        el.keydown().keyup();
+                    }, 100);
+                })
+                .on('change.mask', function(){
+                    el.data('changed', true);
+                })
+                .on('blur.mask', function(){
+                    if (oldValue !== p.val() && !el.data('changed')) {
+                        el.trigger('change');
+                    }
+                    el.data('changed', false);
+                })
+                // it's very important that this callback remains in this position
+                // otherwhise oldValue it's going to work buggy
+                .on('blur.mask', function() {
+                    oldValue = p.val();
+                })
+                // select all text on focus
+                .on('focus.mask', function (e) {
+                    if (options.selectOnFocus === true) {
+                        $(e.target).select();
+                    }
+                })
+                // clear the value if it not complete the mask
+                .on('focusout.mask', function() {
+                    if (options.clearIfNotMatch && !regexMask.test(p.val())) {
+                       p.val('');
+                   }
+                });
+            },
+            getRegexMask: function() {
+                var maskChunks = [], translation, pattern, optional, recursive, oRecursive, r;
+
+                for (var i = 0; i < mask.length; i++) {
+                    translation = jMask.translation[mask.charAt(i)];
+
+                    if (translation) {
+
+                        pattern = translation.pattern.toString().replace(/.{1}$|^.{1}/g, '');
+                        optional = translation.optional;
+                        recursive = translation.recursive;
+
+                        if (recursive) {
+                            maskChunks.push(mask.charAt(i));
+                            oRecursive = {digit: mask.charAt(i), pattern: pattern};
+                        } else {
+                            maskChunks.push(!optional && !recursive ? pattern : (pattern + '?'));
+                        }
+
+                    } else {
+                        maskChunks.push(mask.charAt(i).replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&'));
+                    }
+                }
+
+                r = maskChunks.join('');
+
+                if (oRecursive) {
+                    r = r.replace(new RegExp('(' + oRecursive.digit + '(.*' + oRecursive.digit + ')?)'), '($1)?')
+                         .replace(new RegExp(oRecursive.digit, 'g'), oRecursive.pattern);
+                }
+
+                return new RegExp(r);
+            },
+            destroyEvents: function() {
+                el.off(['input', 'keydown', 'keyup', 'paste', 'drop', 'blur', 'focusout', ''].join('.mask '));
+            },
+            val: function(v) {
+                var isInput = el.is('input'),
+                    method = isInput ? 'val' : 'text',
+                    r;
+
+                if (arguments.length > 0) {
+                    if (el[method]() !== v) {
+                        el[method](v);
+                    }
+                    r = el;
+                } else {
+                    r = el[method]();
+                }
+
+                return r;
+            },
+            calculateCaretPosition: function(oldVal) {
+                var newVal = p.getMasked(),
+                    caretPosNew = p.getCaret();
+                if (oldVal !== newVal) {
+                    var caretPosOld = el.data('mask-previus-caret-pos') || 0,
+                        newValL = newVal.length,
+                        oldValL = oldVal.length,
+                        maskDigitsBeforeCaret = 0,
+                        maskDigitsAfterCaret = 0,
+                        maskDigitsBeforeCaretAll = 0,
+                        maskDigitsBeforeCaretAllOld = 0,
+                        i = 0;
+
+                    for (i = caretPosNew; i < newValL; i++) {
+                        if (!p.maskDigitPosMap[i]) {
+                            break;
+                        }
+                        maskDigitsAfterCaret++;
+                    }
+
+                    for (i = caretPosNew - 1; i >= 0; i--) {
+                        if (!p.maskDigitPosMap[i]) {
+                            break;
+                        }
+                        maskDigitsBeforeCaret++;
+                    }
+
+                    for (i = caretPosNew - 1; i >= 0; i--) {
+                        if (p.maskDigitPosMap[i]) {
+                            maskDigitsBeforeCaretAll++;
+                        }
+                    }
+
+                    for (i = caretPosOld - 1; i >= 0; i--) {
+                        if (p.maskDigitPosMapOld[i]) {
+                            maskDigitsBeforeCaretAllOld++;
+                        }
+                    }
+
+                    // if the cursor is at the end keep it there
+                    if (caretPosNew > oldValL) {
+                      caretPosNew = newValL * 10;
+                    } else if (caretPosOld >= caretPosNew && caretPosOld !== oldValL) {
+                        if (!p.maskDigitPosMapOld[caretPosNew])  {
+                          var caretPos = caretPosNew;
+                          caretPosNew -= maskDigitsBeforeCaretAllOld - maskDigitsBeforeCaretAll;
+                          caretPosNew -= maskDigitsBeforeCaret;
+                          if (p.maskDigitPosMap[caretPosNew])  {
+                            caretPosNew = caretPos;
+                          }
+                        }
+                    }
+                    else if (caretPosNew > caretPosOld) {
+                        caretPosNew += maskDigitsBeforeCaretAll - maskDigitsBeforeCaretAllOld;
+                        caretPosNew += maskDigitsAfterCaret;
+                    }
+                }
+                return caretPosNew;
+            },
+            behaviour: function(e) {
+                e = e || window.event;
+                p.invalid = [];
+
+                var keyCode = el.data('mask-keycode');
+
+                if ($.inArray(keyCode, jMask.byPassKeys) === -1) {
+                    var newVal = p.getMasked(),
+                        caretPos = p.getCaret(),
+                        oldVal = el.data('mask-previus-value') || '';
+
+                    // this is a compensation to devices/browsers that don't compensate
+                    // caret positioning the right way
+                    setTimeout(function() {
+                      p.setCaret(p.calculateCaretPosition(oldVal));
+                    }, $.jMaskGlobals.keyStrokeCompensation);
+
+                    p.val(newVal);
+                    p.setCaret(caretPos);
+                    return p.callbacks(e);
+                }
+            },
+            getMasked: function(skipMaskChars, val) {
+                var buf = [],
+                    value = val === undefined ? p.val() : val + '',
+                    m = 0, maskLen = mask.length,
+                    v = 0, valLen = value.length,
+                    offset = 1, addMethod = 'push',
+                    resetPos = -1,
+                    maskDigitCount = 0,
+                    maskDigitPosArr = [],
+                    lastMaskChar,
+                    check;
+
+                if (options.reverse) {
+                    addMethod = 'unshift';
+                    offset = -1;
+                    lastMaskChar = 0;
+                    m = maskLen - 1;
+                    v = valLen - 1;
+                    check = function () {
+                        return m > -1 && v > -1;
+                    };
+                } else {
+                    lastMaskChar = maskLen - 1;
+                    check = function () {
+                        return m < maskLen && v < valLen;
+                    };
+                }
+
+                var lastUntranslatedMaskChar;
+                while (check()) {
+                    var maskDigit = mask.charAt(m),
+                        valDigit = value.charAt(v),
+                        translation = jMask.translation[maskDigit];
+
+                    if (translation) {
+                        if (valDigit.match(translation.pattern)) {
+                            buf[addMethod](valDigit);
+                             if (translation.recursive) {
+                                if (resetPos === -1) {
+                                    resetPos = m;
+                                } else if (m === lastMaskChar && m !== resetPos) {
+                                    m = resetPos - offset;
+                                }
+
+                                if (lastMaskChar === resetPos) {
+                                    m -= offset;
+                                }
+                            }
+                            m += offset;
+                        } else if (valDigit === lastUntranslatedMaskChar) {
+                            // matched the last untranslated (raw) mask character that we encountered
+                            // likely an insert offset the mask character from the last entry; fall
+                            // through and only increment v
+                            maskDigitCount--;
+                            lastUntranslatedMaskChar = undefined;
+                        } else if (translation.optional) {
+                            m += offset;
+                            v -= offset;
+                        } else if (translation.fallback) {
+                            buf[addMethod](translation.fallback);
+                            m += offset;
+                            v -= offset;
+                        } else {
+                          p.invalid.push({p: v, v: valDigit, e: translation.pattern});
+                        }
+                        v += offset;
+                    } else {
+                        if (!skipMaskChars) {
+                            buf[addMethod](maskDigit);
+                        }
+
+                        if (valDigit === maskDigit) {
+                            maskDigitPosArr.push(v);
+                            v += offset;
+                        } else {
+                            lastUntranslatedMaskChar = maskDigit;
+                            maskDigitPosArr.push(v + maskDigitCount);
+                            maskDigitCount++;
+                        }
+
+                        m += offset;
+                    }
+                }
+
+                var lastMaskCharDigit = mask.charAt(lastMaskChar);
+                if (maskLen === valLen + 1 && !jMask.translation[lastMaskCharDigit]) {
+                    buf.push(lastMaskCharDigit);
+                }
+
+                var newVal = buf.join('');
+                p.mapMaskdigitPositions(newVal, maskDigitPosArr, valLen);
+                return newVal;
+            },
+            mapMaskdigitPositions: function(newVal, maskDigitPosArr, valLen) {
+              var maskDiff = options.reverse ? newVal.length - valLen : 0;
+              p.maskDigitPosMap = {};
+              for (var i = 0; i < maskDigitPosArr.length; i++) {
+                p.maskDigitPosMap[maskDigitPosArr[i] + maskDiff] = 1;
+              }
+            },
+            callbacks: function (e) {
+                var val = p.val(),
+                    changed = val !== oldValue,
+                    defaultArgs = [val, e, el, options],
+                    callback = function(name, criteria, args) {
+                        if (typeof options[name] === 'function' && criteria) {
+                            options[name].apply(this, args);
+                        }
+                    };
+
+                callback('onChange', changed === true, defaultArgs);
+                callback('onKeyPress', changed === true, defaultArgs);
+                callback('onComplete', val.length === mask.length, defaultArgs);
+                callback('onInvalid', p.invalid.length > 0, [val, e, el, p.invalid, options]);
+            }
+        };
+
+        el = $(el);
+        var jMask = this, oldValue = p.val(), regexMask;
+
+        mask = typeof mask === 'function' ? mask(p.val(), undefined, el,  options) : mask;
+
+        // public methods
+        jMask.mask = mask;
+        jMask.options = options;
+        jMask.remove = function() {
+            var caret = p.getCaret();
+            if (jMask.options.placeholder) {
+                el.removeAttr('placeholder');
+            }
+            if (el.data('mask-maxlength')) {
+                el.removeAttr('maxlength');
+            }
+            p.destroyEvents();
+            p.val(jMask.getCleanVal());
+            p.setCaret(caret);
+            return el;
+        };
+
+        // get value without mask
+        jMask.getCleanVal = function() {
+           return p.getMasked(true);
+        };
+
+        // get masked value without the value being in the input or element
+        jMask.getMaskedVal = function(val) {
+           return p.getMasked(false, val);
+        };
+
+       jMask.init = function(onlyMask) {
+            onlyMask = onlyMask || false;
+            options = options || {};
+
+            jMask.clearIfNotMatch  = $.jMaskGlobals.clearIfNotMatch;
+            jMask.byPassKeys       = $.jMaskGlobals.byPassKeys;
+            jMask.translation      = $.extend({}, $.jMaskGlobals.translation, options.translation);
+
+            jMask = $.extend(true, {}, jMask, options);
+
+            regexMask = p.getRegexMask();
+
+            if (onlyMask) {
+                p.events();
+                p.val(p.getMasked());
+            } else {
+                if (options.placeholder) {
+                    el.attr('placeholder' , options.placeholder);
+                }
+
+                // this is necessary, otherwise if the user submit the form
+                // and then press the "back" button, the autocomplete will erase
+                // the data. Works fine on IE9+, FF, Opera, Safari.
+                if (el.data('mask')) {
+                  el.attr('autocomplete', 'off');
+                }
+
+                // detect if is necessary let the user type freely.
+                // for is a lot faster than forEach.
+                for (var i = 0, maxlength = true; i < mask.length; i++) {
+                    var translation = jMask.translation[mask.charAt(i)];
+                    if (translation && translation.recursive) {
+                        maxlength = false;
+                        break;
+                    }
+                }
+
+                if (maxlength) {
+                    el.attr('maxlength', mask.length).data('mask-maxlength', true);
+                }
+
+                p.destroyEvents();
+                p.events();
+
+                var caret = p.getCaret();
+                p.val(p.getMasked());
+                p.setCaret(caret);
+            }
+        };
+
+        jMask.init(!el.is('input'));
+    };
+
+    $.maskWatchers = {};
+    var HTMLAttributes = function () {
+        var input = $(this),
+            options = {},
+            prefix = 'data-mask-',
+            mask = input.attr('data-mask');
+
+        if (input.attr(prefix + 'reverse')) {
+            options.reverse = true;
+        }
+
+        if (input.attr(prefix + 'clearifnotmatch')) {
+            options.clearIfNotMatch = true;
+        }
+
+        if (input.attr(prefix + 'selectonfocus') === 'true') {
+           options.selectOnFocus = true;
+        }
+
+        if (notSameMaskObject(input, mask, options)) {
+            return input.data('mask', new Mask(this, mask, options));
+        }
+    },
+    notSameMaskObject = function(field, mask, options) {
+        options = options || {};
+        var maskObject = $(field).data('mask'),
+            stringify = JSON.stringify,
+            value = $(field).val() || $(field).text();
+        try {
+            if (typeof mask === 'function') {
+                mask = mask(value);
+            }
+            return typeof maskObject !== 'object' || stringify(maskObject.options) !== stringify(options) || maskObject.mask !== mask;
+        } catch (e) {}
+    },
+    eventSupported = function(eventName) {
+        var el = document.createElement('div'), isSupported;
+
+        eventName = 'on' + eventName;
+        isSupported = (eventName in el);
+
+        if ( !isSupported ) {
+            el.setAttribute(eventName, 'return;');
+            isSupported = typeof el[eventName] === 'function';
+        }
+        el = null;
+
+        return isSupported;
+    };
+
+    $.fn.mask = function(mask, options) {
+        options = options || {};
+        var selector = this.selector,
+            globals = $.jMaskGlobals,
+            interval = globals.watchInterval,
+            watchInputs = options.watchInputs || globals.watchInputs,
+            maskFunction = function() {
+                if (notSameMaskObject(this, mask, options)) {
+                    return $(this).data('mask', new Mask(this, mask, options));
+                }
+            };
+
+        $(this).each(maskFunction);
+
+        if (selector && selector !== '' && watchInputs) {
+            clearInterval($.maskWatchers[selector]);
+            $.maskWatchers[selector] = setInterval(function(){
+                $(document).find(selector).each(maskFunction);
+            }, interval);
+        }
+        return this;
+    };
+
+    $.fn.masked = function(val) {
+        return this.data('mask').getMaskedVal(val);
+    };
+
+    $.fn.unmask = function() {
+        clearInterval($.maskWatchers[this.selector]);
+        delete $.maskWatchers[this.selector];
+        return this.each(function() {
+            var dataMask = $(this).data('mask');
+            if (dataMask) {
+                dataMask.remove().removeData('mask');
+            }
+        });
+    };
+
+    $.fn.cleanVal = function() {
+        return this.data('mask').getCleanVal();
+    };
+
+    $.applyDataMask = function(selector) {
+        selector = selector || $.jMaskGlobals.maskElements;
+        var $selector = (selector instanceof $) ? selector : $(selector);
+        $selector.filter($.jMaskGlobals.dataMaskAttr).each(HTMLAttributes);
+    };
+
+    var globals = {
+        maskElements: 'input,td,span,div',
+        dataMaskAttr: '*[data-mask]',
+        dataMask: true,
+        watchInterval: 300,
+        watchInputs: true,
+        keyStrokeCompensation: 10,
+        // old versions of chrome dont work great with input event
+        useInput: !/Chrome\/[2-4][0-9]|SamsungBrowser/.test(window.navigator.userAgent) && eventSupported('input'),
+        watchDataMask: false,
+        byPassKeys: [9, 16, 17, 18, 36, 37, 38, 39, 40, 91],
+        translation: {
+            '0': {pattern: /\d/},
+            '9': {pattern: /\d/, optional: true},
+            '#': {pattern: /\d/, recursive: true},
+            'A': {pattern: /[a-zA-Z0-9]/},
+            'S': {pattern: /[a-zA-Z]/}
+        }
+    };
+
+    $.jMaskGlobals = $.jMaskGlobals || {};
+    globals = $.jMaskGlobals = $.extend(true, {}, globals, $.jMaskGlobals);
+
+    // looking for inputs with data-mask attribute
+    if (globals.dataMask) {
+        $.applyDataMask();
+    }
+
+    setInterval(function() {
+        if ($.jMaskGlobals.watchDataMask) {
+            $.applyDataMask();
+        }
+    }, globals.watchInterval);
+}, window.jQuery, window.Zepto));
+
+
+/***/ }),
+
 /***/ "./node_modules/jquery-ui/ui/keycode.js":
 /*!**********************************************!*\
   !*** ./node_modules/jquery-ui/ui/keycode.js ***!
@@ -38252,6 +38866,855 @@ __webpack_require__(/*! select2 */ "./node_modules/select2/dist/js/select2.js");
 
 __webpack_require__(/*! starrr/dist/starrr.js */ "./node_modules/starrr/dist/starrr.js");
 
+__webpack_require__(/*! jquery-mask-plugin */ "./node_modules/jquery-mask-plugin/dist/jquery.mask.js");
+
+__webpack_require__(/*! ./dncalendar.js */ "./resources/js/dncalendar.js");
+
+/***/ }),
+
+/***/ "./resources/js/dncalendar.js":
+/*!************************************!*\
+  !*** ./resources/js/dncalendar.js ***!
+  \************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+/* ========================================================================
+ * DNCalendar - v1.0
+ * https://github.com/black-lotus/dnCalendar
+ * ========================================================================
+ * Copyright 2015 WPIC, Romdoni Agung Purbayanto
+ *
+ * ========================================================================
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ * ========================================================================
+ */
+(function ($) {
+  $.fn.dnCalendar = function (options) {
+    var self = $(this);
+    var settings = {}; // current date
+
+    var currDate = new Date(); // custom default date
+
+    var defDate = null; // today date
+
+    var todayDate = new Date(); // week names
+
+    var weekNames = ["sunday", "monday", "tuesday", "wednesday", "thursday", "friday", "saturday"]; // used to check week names has already restructured
+
+    var weekNamesHasAlreadySorted = false;
+    /**
+     * move prototype of array
+     */
+
+    Array.prototype.move = function (old_index, new_index) {
+      while (old_index < 0) {
+        old_index += this.length;
+      }
+
+      while (new_index < 0) {
+        new_index += this.length;
+      }
+
+      if (new_index >= this.length) {
+        var k = new_index - this.length;
+
+        while (k-- + 1) {
+          this.push(undefined);
+        }
+      }
+
+      this.splice(new_index, 0, this.splice(old_index, 1)[0]);
+      return this; // for testing purposes
+    };
+    /**
+     * get selected day index of week
+     *
+     * @return int
+     */
+
+
+    var getDayIndexOfWeek = function getDayIndexOfWeek() {
+      for (var i = 0; i < weekNames.length; i++) {
+        if (weekNames[i] == settings.startWeek.toLowerCase()) {
+          return i;
+        }
+      }
+
+      return 0;
+    };
+    /**
+     * get total weeks in month
+     *
+     * @param int
+     * @param int, range 1..12
+     * @return int
+     */
+
+
+    var weekCount = function weekCount(year, month_number) {
+      var firstOfMonth = new Date(year, month_number - 1, 1);
+      var lastOfMonth = new Date(year, month_number, 0);
+      var used = firstOfMonth.getDay() + lastOfMonth.getDate();
+      return Math.ceil(used / 7);
+    };
+    /**
+     * get total weeks in month
+     *
+     * @param int
+     * @param int, range 1..12
+     * @return array[int][int]
+     */
+
+
+    var getWeekOfMonth = function getWeekOfMonth(month, year) {
+      var weeks = [],
+          firstDate = new Date(year, month, 1),
+          lastDate = new Date(year, month + 1, 0),
+          numDays = lastDate.getDate(),
+          startDayWeek = getDayIndexOfWeek();
+      var lastDateOfPrevMonth = new Date(year, month, 0); // get last day of previous month
+
+      var prevDate = lastDateOfPrevMonth.getDate() - firstDate.getDay();
+      var firstDateOfNextMonth = new Date(year, month + 1, 1); // get fist day of next month
+
+      var nextDate = firstDateOfNextMonth.getDate();
+      var date = 1;
+
+      while (date <= numDays) {
+        var i = 0;
+        var tempWeek = [];
+
+        while (i < 7) {
+          // first column
+          if (weeks.length == 0) {
+            if (i >= firstDate.getDay()) {
+              tempWeek.push(date);
+              date++;
+            } else {
+              prevDate++;
+              tempWeek.push(prevDate);
+            }
+          } else {
+            if (date <= numDays) {
+              tempWeek.push(date);
+              date++;
+            } else {
+              tempWeek.push(nextDate++);
+            }
+          }
+
+          i++;
+        }
+
+        weeks.push(tempWeek);
+      }
+
+      return weeks;
+    };
+    /**
+     * sorting week of month by selected day
+     *
+     * @param array[int][int]
+     * @return array[int][int]
+     */
+
+
+    var sortingBySelectedDay = function sortingBySelectedDay(weeks, month, year) {
+      var startDayWeek = getDayIndexOfWeek();
+      var lastDateOfPrevMonth = new Date(year, month, 0); // get last day of previous month
+
+      var prevDate = lastDateOfPrevMonth.getDate();
+      var lastDate = new Date(year, month + 1, 0).getDate();
+
+      function isset(arr, val) {
+        var found = false;
+
+        for (var m = 0; m < arr.length; m++) {
+          if (arr[m] == val) {
+            found = true;
+            break;
+          }
+        }
+
+        return found;
+      } // sorting when startDatWeek is greater than 0 (0 is sunday)
+
+
+      if (startDayWeek > 0) {
+        var newArr = [];
+        var nWeeks = weeks.length;
+
+        for (var i = 0; i < nWeeks; i++) {
+          var tempArr = []; // first row
+
+          if (i == 0 && newArr.length == 0) {
+            // check first day is sunday
+            if (weeks[i][0] == 1) {
+              // calculate previous date
+              var startPrevDate = prevDate - (7 - startDayWeek - 1);
+
+              while (startPrevDate <= prevDate) {
+                tempArr.push(startPrevDate);
+                startPrevDate++;
+              } // get next date
+
+
+              for (var j = 0; j < weeks[i].length; j++) {
+                if (tempArr.length < weeks[i].length) {
+                  var val = weeks[i][j];
+                  var isPush = isset(tempArr, val);
+
+                  if (!isPush) {
+                    tempArr.push(val);
+                  }
+                }
+              }
+            } else {
+              for (var j = 0; j < weeks[i].length; j++) {
+                if (tempArr.length < weeks[i].length) {
+                  if (typeof weeks[i][j + startDayWeek] !== 'undefined') {
+                    tempArr.push(weeks[i][j + startDayWeek]);
+                  } else {
+                    if (typeof weeks[i + 1] !== 'undefined') {
+                      for (var k = 0; k < weeks[i + 1].length; k++) {
+                        if (tempArr.length < weeks[i].length) {
+                          var val = weeks[i + 1][k];
+                          var isPush = isset(tempArr, val);
+
+                          if (!isPush) {
+                            tempArr.push(val);
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          } else {
+            for (var newI = i; newI >= 0; newI--) {
+              var found = false;
+
+              for (var j = 0; j < weeks[newI].length; j++) {
+                var newArrRow = newArr.length - 1;
+                var newArrCol = newArr[newArrRow].length - 1;
+
+                if (newArr[newArrRow][newArrCol] == weeks[newI][j]) {
+                  found = true;
+                }
+
+                if (found == true) {
+                  if (typeof weeks[newI][j + startDayWeek] !== 'undefined') {
+                    if (tempArr.length < weeks[newI].length) {
+                      var val = weeks[newI][j + startDayWeek];
+                      var isPush = isset(tempArr, val);
+
+                      if (!isPush) {
+                        /**
+                         * Temporary bug fixes
+                         * last date of next month wrong
+                         */
+                        if (typeof tempArr[tempArr.length - 1] !== 'undefined') {
+                          var lastIndexTempArr = tempArr[tempArr.length - 1];
+
+                          if (lastIndexTempArr + 1 != val && lastIndexTempArr + 1 < lastDate) {
+                            tempArr.push(lastIndexTempArr + 1);
+                          } else {
+                            tempArr.push(weeks[newI][j + startDayWeek]);
+                          }
+                        } else {
+                          tempArr.push(weeks[newI][j + startDayWeek]);
+                        }
+                      }
+                    }
+                  } else {
+                    if (typeof weeks[newI + 1] !== 'undefined') {
+                      for (var k = 0; k < weeks[newI + 1].length; k++) {
+                        if (tempArr.length < weeks[newI].length) {
+                          var val = weeks[newI + 1][k];
+                          var isPush = isset(tempArr, val);
+
+                          if (!isPush) {
+                            tempArr.push(val);
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+
+          newArr.push(tempArr);
+        } // check if last date is not found
+
+
+        var found = false;
+
+        for (var i = 1; i < newArr.length; i++) {
+          for (var j = 0; j < newArr[i].length; j++) {
+            if (newArr[i][j] == lastDate) {
+              found = true;
+              break;
+            }
+          }
+
+          if (found == true) {
+            break;
+          }
+        }
+
+        var newArrRow = newArr.length - 1;
+
+        if (found == false) {
+          var newArrCol = newArr[newArrRow].length - 1;
+          var lastDateInNewArr = newArr[newArrRow][newArrCol];
+          var tempArr = [];
+
+          while (lastDateInNewArr < lastDate) {
+            lastDateInNewArr++;
+            tempArr.push(lastDateInNewArr);
+          }
+
+          if (tempArr.length < 7) {
+            var limit = 7 - tempArr.length;
+            var date = 1;
+
+            while (date <= limit) {
+              tempArr.push(date);
+              date++;
+            }
+          }
+
+          newArr.push(tempArr);
+        } else {
+          var newArrCol = newArr[newArrRow].length - 1;
+          var lastDateInNewArr = newArr[newArrRow][newArrCol];
+          var colLeft = 7 - (newArrCol + 1);
+
+          if (lastDateInNewArr > 7) {
+            lastDateInNewArr = 1;
+          } else {
+            lastDateInNewArr = lastDateInNewArr + 1;
+          }
+
+          while (colLeft > 0) {
+            newArr[newArrRow].push(lastDateInNewArr);
+            lastDateInNewArr++;
+            colLeft--;
+          }
+        }
+
+        return newArr;
+      }
+
+      return weeks;
+    };
+    /*
+    * draw calendar and give call back when date selected
+    */
+
+
+    var draw = function draw() {
+      var m = currDate.getMonth(); // get month
+
+      var d = currDate.getDate(); // get date of month
+
+      var y = currDate.getFullYear(); // get full year
+
+      var dates = getWeekOfMonth(m, y);
+
+      for (var i = 0; i < dates.length; i++) {
+        var string = "";
+
+        for (var j = 0; j < dates[i].length; j++) {
+          string += dates[i][j] + " ";
+        }
+      }
+
+      dates = sortingBySelectedDay(dates, m, y);
+
+      for (var i = 0; i < dates.length; i++) {
+        var string = "";
+
+        for (var j = 0; j < dates[i].length; j++) {
+          string += dates[i][j] + " ";
+        }
+      } // get month name
+
+
+      var headerMonth = settings.monthNames[m];
+
+      if (settings.monthUseShortName == true) {
+        headerMonth = settings.monthNamesShort[m];
+      } // create header label
+
+
+      var headerGroup = $("<div id='dncalendar-header' class='dncalendar-header'></div>");
+      headerGroup.append("<h2>" + headerMonth + " " + y + "</h2>"); // determine prev link as false
+
+      var prevInactive = false; // set prev link as true when minDate is exist and current date is less than or equal minDate
+
+      var minDate = null;
+
+      if (typeof settings.minDate !== 'undefined') {
+        var minDateArr = settings.minDate.split('-');
+        minDate = new Date(minDateArr[0], minDateArr[1] - 1, minDateArr[2]);
+
+        if (minDate.getFullYear() >= y) {
+          if (minDate.getMonth() >= m) {
+            prevInactive = true;
+          }
+        }
+      } // determine prev link as false
+
+
+      var nextInactive = false; // set next link as true when maxDate is exist and current date is greater than or equal maxDate
+
+      var maxDate = null;
+
+      if (typeof settings.maxDate !== 'undefined') {
+        var maxDateArr = settings.maxDate.split('-');
+        maxDate = new Date(maxDateArr[0], maxDateArr[1] - 1, maxDateArr[2]);
+
+        if (maxDate.getFullYear() <= y) {
+          if (maxDate.getMonth() <= m) {
+            nextInactive = true;
+          }
+        }
+      } // create link group
+
+
+      var calendarLinksGroup = $("<div id='dncalendar-links' class='dncalendar-links'></div>");
+      var prevLinkGroup = $("<div id='dncalendar-prev-month' class='dncalendar-prev-month'></div>");
+      var nextLinkGroup = $("<div id='dncalendar-next-month' class='dncalendar-next-month'></div>"); // disable prev link
+
+      if (prevInactive) {
+        prevLinkGroup.addClass("dncalendar-inactive");
+        prevLinkGroup.removeAttr("id");
+      } // disable next link
+
+
+      if (nextInactive) {
+        nextLinkGroup.addClass("dncalendar-inactive");
+        nextLinkGroup.removeAttr("id");
+      } // add link group into header
+
+
+      calendarLinksGroup.append(prevLinkGroup);
+      calendarLinksGroup.append(nextLinkGroup);
+      headerGroup.append(calendarLinksGroup);
+      var bodyGroup = $("<div id='dncalendar-body' class='dncalendar-body'></div>");
+      var tableGroup = $("<table></table>");
+      var weekName = settings.dayNames;
+
+      if (settings.dayUseShortName == true) {
+        weekName = settings.dayNamesShort;
+      } // do not re-order day of week for second times
+
+
+      var dayIndex = getDayIndexOfWeek();
+
+      if (weekNamesHasAlreadySorted == false) {
+        // re-order week name based on startWeek settings
+        var oldIndex = null;
+        var newIndex = 0;
+
+        for (var i = 0; i < weekName.length; i++) {
+          if (i >= dayIndex) {
+            if (oldIndex == null) {
+              oldIndex = i;
+            }
+
+            weekName.move(oldIndex, newIndex);
+            oldIndex++;
+            newIndex++;
+          }
+        }
+
+        weekNamesHasAlreadySorted = true;
+      }
+
+      var sundayIndex = dayIndex == 0 ? 0 : 7 - dayIndex;
+      var saturdayIndex = 6 - dayIndex;
+      var tableHeadGroup = $("<thead></thead>");
+      var tableHeadRowGroup = $("<tr></tr>");
+      var weekNameLength = weekName.length;
+
+      for (var i = 0; i < weekNameLength; i++) {
+        tableHeadRowGroup.append("<td " + (i == sundayIndex || i == saturdayIndex ? 'class=\"holiday\"' : '') + ">" + weekName[i] + "</td>");
+      }
+
+      tableHeadGroup.append(tableHeadRowGroup);
+      var tableBodyGroup = $("<tbody></tbody>");
+      var totalWeeks = weekCount(y, m + 1);
+      var totalDaysInWeeks = 7;
+      var startDate = 1;
+      var firstDayOfMonth = new Date(y, m, 1); // get first day of month
+
+      var lastDayOfMonth = new Date(y, m + 1, 0); // get last day of month
+
+      var lastDateOfPrevMonth = new Date(y, m, 0); // get last day of previous month
+
+      var prevDate = lastDateOfPrevMonth.getDate() - firstDayOfMonth.getDay() + 1;
+      var firstDateOfNextMonth = new Date(y, m + 1, 1); // get fist day of next month
+
+      var nextDate = firstDateOfNextMonth.getDate();
+      var limitMinDate = 0;
+
+      if (minDate != null) {
+        limitMinDate = minDate.getDate();
+      }
+
+      var limitMaxDate = 0;
+
+      if (maxDate != null) {
+        limitMaxDate = maxDate.getDate();
+      }
+
+      var todayTitle = 'today';
+      var defaultDateTitle = 'default date';
+
+      if (typeof settings.dataTitles !== 'undefined') {
+        if (typeof settings.dataTitles.defaultDate !== 'undefined') {
+          defaultDateTitle = settings.dataTitles.defaultDate;
+        }
+
+        if (typeof settings.dataTitles.today !== 'undefined') {
+          todayTitle = settings.dataTitles.today;
+        }
+      }
+
+      var sundayIndex = dayIndex == 0 ? 0 : 7 - dayIndex;
+      var saturdayIndex = dayIndex == 0 ? 7 - 1 : 7 - (dayIndex + 1);
+      var nDates = dates.length;
+
+      for (var i = 0; i < nDates; i++) {
+        var tableBodyRowGroup = $("<tr></tr>");
+        var nDate = dates[i].length;
+
+        for (var j = 0; j < nDate; j++) {
+          var date = dates[i][j];
+          var month = m + 1;
+          var year = y;
+          var colDateClass = "";
+          var colDateDataAttr = "";
+          var showCalendarClick = true; // check first row
+
+          if (i == 0) {
+            if (dates[i][j] > 7) {
+              showCalendarClick = false;
+              month = month - 1;
+
+              if (month <= 0) {
+                month = 12;
+                year = year - 1;
+              }
+            }
+          } // check last row
+
+
+          if (i == nDates - 1) {
+            if (dates[i][j] <= 7) {
+              showCalendarClick = false;
+              month = month + 1;
+
+              if (month >= 12) {
+                month = 1;
+                year = year + 1;
+              }
+            }
+          } // check date is today
+
+
+          if (todayDate.getFullYear() == year && todayDate.getMonth() + 1 == month && todayDate.getDate() == date) {
+            colDateClass = ' today-date ';
+            colDateDataAttr = "data-title='" + todayTitle + "'";
+          } // check date is default date
+
+
+          if (defDate != null && defDate.getFullYear() == year && defDate.getMonth() + 1 == month && defDate.getDate() == date) {
+            colDateClass = ' default-date ';
+            colDateDataAttr = "data-title='" + defaultDateTitle + "'";
+          }
+
+          if (j == sundayIndex || j == saturdayIndex) {
+            colDateClass += ' holiday ';
+          } // check date is noted
+
+
+          if (typeof settings.notes !== 'undefined') {
+            if (dateIsNotes(new Date(year, month - 1, date))) {
+              colDateClass += " note ";
+            }
+          }
+
+          if (typeof settings.gray !== 'undefined') {
+            if (dateIsGray(new Date(year, month - 1, date))) {
+              colDateClass += " gray ";
+            }
+          }
+
+          var colDate = "<td id='calendarClick' class='" + colDateClass + " " + (showCalendarClick == true ? 'calendarClick' : '') + "' data-date='" + date + "' data-month='" + month + "' data-year='" + year + "'><div class='entry' " + colDateDataAttr + ">" + date + "</div></td>";
+
+          if (minDate != null) {
+            var myCurrentDate = new Date(year, month - 1, date);
+
+            if (minDate > myCurrentDate) {
+              colDate = "<td class='" + colDateClass + "' data-date='" + date + "' data-month='" + month + "' data-year='" + year + "'><div class='entry' " + colDateDataAttr + ">" + date + "</div></td>";
+            }
+          }
+
+          if (maxDate != null) {
+            var myCurrentDate = new Date(year, month - 1, date);
+
+            if (maxDate < myCurrentDate) {
+              colDate = "<td class='" + colDateClass + "' data-date='" + date + "' data-month='" + month + "' data-year='" + year + "'><div class='entry' " + colDateDataAttr + ">" + date + "</div></td>";
+            }
+          }
+
+          tableBodyRowGroup.append(colDate);
+        }
+
+        tableBodyGroup.append(tableBodyRowGroup);
+      }
+
+      var notesGroup = "";
+
+      if (settings.showNotes) {
+        var notes = getNotesThisMonth();
+        var notesLength = notes.length;
+
+        if (notesLength > 0) {
+          notesGroup = $("<ul class='dncalendar-note-list'></ul>");
+
+          for (var i = 0; i < notesLength; i++) {
+            var date = notes[i].date;
+            var noteList = notes[i].notes;
+            var noteListLength = noteList.length;
+            var list = "";
+            list += "<li class='date'>";
+            list += "<span>" + date + "</span> ";
+
+            if (noteListLength > 0) {
+              list += " : ";
+
+              for (var j = 0; j < noteListLength; j++) {
+                list += noteList[j];
+
+                if (noteListLength <= j) {
+                  list += ", ";
+                }
+              }
+            }
+
+            list += "</li>";
+            notesGroup.append(list);
+          }
+        }
+      }
+
+      var grayGroup = "";
+
+      if (settings.showGray) {
+        var Gray = getGrayThisMonth();
+        var grayLength = gray.length;
+
+        if (grayLength > 0) {
+          grayGroup = $("<ul class='dncalendar-gray-list'></ul>");
+
+          for (var i = 0; i < grayLength; i++) {
+            var date = gray[i].date;
+            var grayList = gray[i].gray;
+            var grayListLength = grayList.length;
+            var list = "";
+            list += "<li class='date'>";
+            list += "<span>" + date + "</span> ";
+
+            if (grayListLength > 0) {
+              list += " : ";
+
+              for (var j = 0; j < grayListLength; j++) {
+                list += grayList[j];
+
+                if (grayListLength <= j) {
+                  list += ", ";
+                }
+              }
+            }
+
+            list += "</li>";
+            grayGroup.append(list);
+          }
+        }
+      }
+
+      tableGroup.append(tableHeadGroup);
+      tableGroup.append(tableBodyGroup);
+      bodyGroup.append(tableGroup);
+      self.html("");
+      self.append(headerGroup);
+      self.append(bodyGroup);
+      self.append(notesGroup);
+      self.append(grayGroup);
+    };
+
+    var dateIsNotes = function dateIsNotes(date) {
+      var notesLength = settings.notes.length;
+
+      for (var i = 0; i < notesLength; i++) {
+        var dateNote = settings.notes[i].date.split('-');
+        var nDate = new Date(dateNote[0], dateNote[1] - 1, dateNote[2]);
+
+        if (nDate.getFullYear() == date.getFullYear() && nDate.getMonth() == date.getMonth() && nDate.getDate() == date.getDate()) {
+          return true;
+        }
+      }
+
+      return false;
+    };
+
+    var dateIsGray = function dateIsGray(date) {
+      var grayLength = settings.gray.length;
+
+      for (var i = 0; i < grayLength; i++) {
+        var dateGray = settings.gray[i].date.split('-');
+        var nDate = new Date(dateGray[0], dateGray[1] - 1, dateGray[2]);
+
+        if (nDate.getFullYear() == date.getFullYear() && nDate.getMonth() == date.getMonth() && nDate.getDate() == date.getDate()) {
+          return true;
+        }
+      }
+
+      return false;
+    };
+
+    var getNotesThisMonth = function getNotesThisMonth() {
+      var result = [];
+      var notesLength = settings.notes.length;
+
+      for (var i = 0; i < notesLength; i++) {
+        var dateNote = settings.notes[i].date.split('-');
+        var nDate = new Date(dateNote[0], dateNote[1] - 1, dateNote[2]);
+
+        if (nDate.getFullYear() == currDate.getFullYear() && nDate.getMonth() == currDate.getMonth()) {
+          var temp = {};
+          temp['date'] = nDate.getDate();
+          temp['notes'] = settings.notes[i].note;
+          result.push(temp);
+        }
+      }
+
+      return result;
+    };
+
+    var getGrayThisMonth = function getGrayThisMonth() {
+      var result = [];
+      var grayLength = settings.gray.length;
+
+      for (var i = 0; i < grayLength; i++) {
+        var dateGray = settings.gray[i].date.split('-');
+        var nDate = new Date(dateGray[0], dateGray[1] - 1, dateGray[2]);
+
+        if (nDate.getFullYear() == currDate.getFullYear() && nDate.getMonth() == currDate.getMonth()) {
+          var temp = {};
+          temp['date'] = nDate.getDate();
+          temp['gray'] = settings.gray[i].gray;
+          result.push(temp);
+        }
+      }
+
+      return result;
+    };
+
+    var nextMonth = function nextMonth() {
+      var firstDateOfNextMonth = new Date(currDate.getFullYear(), currDate.getMonth() + 1, 1); // get fist day of next month
+
+      var date = firstDateOfNextMonth.getDate();
+      var month = firstDateOfNextMonth.getMonth();
+      var year = firstDateOfNextMonth.getFullYear();
+      currDate = new Date(year, month, date);
+      draw();
+    };
+
+    var prevMonth = function prevMonth() {
+      var firstDateOfPrevMonth = new Date(currDate.getFullYear(), currDate.getMonth() - 1, 1); // get fist day of previous month
+
+      var date = firstDateOfPrevMonth.getDate();
+      var month = firstDateOfPrevMonth.getMonth();
+      var year = firstDateOfPrevMonth.getFullYear();
+      currDate = new Date(year, month, date);
+      draw();
+    };
+
+    var triggerAction = function triggerAction() {
+      $('body').on('click', '#' + self.attr('id') + ' #calendarClick', function () {
+        var selectedDate = $(this).data('date');
+        var selectedMonth = $(this).data('month');
+        var selectedYear = $(this).data('year');
+        settings.dayClick.call(this, new Date(selectedYear, selectedMonth - 1, selectedDate), self);
+      });
+      $('body').on('click', '#dncalendar-prev-month', function () {
+        prevMonth();
+      });
+      $('body').on('click', '#dncalendar-next-month', function () {
+        nextMonth();
+      });
+    };
+
+    return {
+      build: function build() {
+        settings = $.extend({}, $.fn.dnCalendar.defaults, options); // replace with defaultDate when exist
+
+        if (typeof settings.defaultDate !== 'undefined') {
+          var defaultDateArr = settings.defaultDate.split('-');
+          currDate = new Date(defaultDateArr[0], defaultDateArr[1] - 1, defaultDateArr[2]);
+          defDate = currDate;
+        }
+
+        draw();
+        triggerAction();
+      },
+      update: function update(options) {
+        settings = $.extend(settings, options); // replace with defaultDate when exist
+
+        if (typeof settings.defaultDate !== 'undefined') {
+          var defaultDateArr = settings.defaultDate.split('-');
+          currDate = new Date(defaultDateArr[0], defaultDateArr[1] - 1, defaultDateArr[2]);
+          defDate = currDate;
+        }
+
+        draw();
+      }
+    };
+  }; // plugin defaults
+
+
+  $.fn.dnCalendar.defaults = {
+    monthNames: ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"],
+    monthNamesShort: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Okt', 'Nov', 'Dec'],
+    dayNames: ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'],
+    dayNamesShort: ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'],
+    dayUseShortName: false,
+    monthUseShortName: false,
+    showNotes: false,
+    startWeek: 'sunday',
+    dayClick: function dayClick(date, view) {}
+  };
+})(jQuery);
+
 /***/ }),
 
 /***/ "./resources/js/scripts.js":
@@ -38378,6 +39841,19 @@ $(document).ready(function () {
     } else {
       e.preventDefault();
     }
+  });
+  $('input.money').on('change', function () {
+    var value = $(this).val();
+    console.log("hi");
+    value = parseFloat(value);
+
+    if (!isNaN(value)) {
+      value = value.toFixed(2);
+    } else {
+      value = "";
+    }
+
+    $(this).val(value);
   });
 });
 

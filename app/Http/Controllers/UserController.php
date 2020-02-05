@@ -29,7 +29,7 @@ class UserController extends Controller
             if (!$user->registration_complete) {
                 if ($user->hasRole('sitter')) {
                     return view('auth.register.next.sitter');
-                } elseif ($user->hasRole('parent') && $user->hasRole('incomplete')) {
+                } elseif ($user->hasRole('parent')) {
                     return view('auth.register.next.parent');
                 }
             } else {
@@ -106,20 +106,85 @@ class UserController extends Controller
                     $experience_description : $user->experience_description;
 
                 // Experience Fields
-                $experience_infant = $request->input('experience_infant');
-                $user->experience_infant = $experience_infant ? true : false;
-                $experience_toddler = $request->input('experience_toddler');
-                $user->experience_toddler = $experience_toddler ? true : false;
-                $experience_school_age = $request->input('experience_school_age');
-                $user->experience_school_age = $experience_school_age ? true : false;
+                $experience_infant = checkboxBoolean($request->input('experience_infant'));
+                $user->experience_infant = is_bool($experience_infant) ?
+                    $experience_infant : $user->experience_infant;
 
-                //Video Resume
+                $experience_toddler = checkboxBoolean($request->input('experience_toddler'));
+                $user->experience_toddler = is_bool($experience_toddler) ?
+                    $experience_toddler : $user->experience_toddler;
+
+                $experience_school_age = checkboxBoolean($request->input('experience_school_age'));
+                $user->experience_school_age = is_bool($experience_school_age) ?
+                    $experience_school_age : $user->experience_school_age;
+                // END Experience Fields
+
+                // Special Needs
+                $experience_add_adhd = checkboxBoolean($request->input('experience_add_adhd'));
+                $user->experience_add_adhd = is_bool($experience_add_adhd) ?
+                    $experience_add_adhd : $user->experience_add_adhd;
+
+                $experience_asd = checkboxBoolean($request->input('experience_asd'));
+                $user->experience_asd = is_bool($experience_asd) ?
+                    $experience_asd : $user->experience_asd;
+
+                $experience_visually_impaired = checkboxBoolean($request->input('experience_visually_impaired'));
+                $user->experience_visually_impaired = is_bool($experience_visually_impaired) ?
+                    $experience_visually_impaired : $user->experience_visually_impaired;
+
+                $experience_hearing_impaired = checkboxBoolean($request->input('experience_hearing_impaired'));
+                $user->experience_hearing_impaired = is_bool($experience_hearing_impaired) ?
+                    $experience_hearing_impaired : $user->experience_hearing_impaired;
+
+                $experience_developmental = checkboxBoolean($request->input('experience_developmental'));
+                $user->experience_developmental = is_bool($experience_developmental) ?
+                    $experience_developmental : $user->experience_developmental;
+
+                $experience_behavioral = checkboxBoolean($request->input('experience_behavioral'));
+                $user->experience_behavioral = is_bool($experience_behavioral) ?
+                    $experience_behavioral : $user->experience_behavioral;
+
+                $experience_down_syndrome = checkboxBoolean($request->input('experience_down_syndrome'));
+                $user->experience_down_syndrome = is_bool($experience_down_syndrome) ?
+                    $experience_down_syndrome : $user->experience_down_syndrome;
+
+                $experience_seizures = checkboxBoolean($request->input('experience_seizures'));
+                $user->experience_seizures = is_bool($experience_seizures) ?
+                    $experience_seizures : $user->experience_seizures;
+                // END Special Needs
+
+                // Video Resume
                 $video_resume = $request->input('video_resume');
                 $user->video_resume = $video_resume ?
                     $video_resume : $user->video_resume;
 
+                // Hourly Rate
+                $standard_hourly_rate = $request->input('standard_hourly_rate');
+                $user->standard_hourly_rate = $standard_hourly_rate ?
+                    $standard_hourly_rate : $user->standard_hourly_rate;
 
+            } elseif ($user->hasRole('parent')) {
+                $children = buildChildrenArray($request->input("children"));
+                if (is_array($children)) {
+                    $user->children = json_encode($children);
+                }
             }
+
+            // Name
+            $first_name = $request->input('first_name');
+            $user->first_name = $first_name ?
+                $first_name : $user->first_name;
+            $last_name = $request->input('last_name');
+            $user->last_name = $last_name ?
+                $last_name : $user->last_name;
+
+            // Address Info
+            $city = $request->input('city');
+            $user->city = $city ?
+                $city : $user->city;
+            $region = $request->input('region');
+            $user->region = $region ?
+                $region : $user->region;
 
             // Journey with Christ
             $journey = $request->input('journey');
@@ -131,7 +196,7 @@ class UserController extends Controller
             }
 
             $user->save();
-            return redirect()->route('dashboard');
+            return back();
         }
 
         abort(403);
