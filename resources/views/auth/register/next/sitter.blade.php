@@ -18,7 +18,7 @@
                     <h2>Tell Us a Little Bit About Your Experience</h2>
                     <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
 
-                    <div class="loginOptions register-form  register-child">
+                    <div class="loginOptions register-form register-child">
                         <div id="childContainer">
                             <div id="child_1">
                                 <i class="im im-x-mark iGone"></i>

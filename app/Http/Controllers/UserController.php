@@ -29,7 +29,7 @@ class UserController extends Controller
             if (!$user->registration_complete) {
                 if ($user->hasRole('sitter')) {
                     return view('auth.register.next.sitter');
-                } elseif ($user->hasRole('parent') && $user->hasRole('incomplete')) {
+                } elseif ($user->hasRole('parent')) {
                     return view('auth.register.next.parent');
                 }
             } else {
@@ -163,6 +163,11 @@ class UserController extends Controller
                 $user->standard_hourly_rate = $standard_hourly_rate ?
                     $standard_hourly_rate : $user->standard_hourly_rate;
 
+            } elseif ($user->hasRole('parent')) {
+                $children = buildChildrenArray($request->input("children"));
+                if (is_array($children)) {
+                    $user->children = json_encode($children);
+                }
             }
 
             // Name

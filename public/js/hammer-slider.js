@@ -34,6 +34,7 @@ $(document).ready(function() {
         e.preventDefault();
 
         if ($(this).hasClass('verify-slide')) {
+            console.log('clicked');
             $currentSlide = $(this).parents('.mySlides');
 
             $inputs = $currentSlide.find('input,textarea,select');

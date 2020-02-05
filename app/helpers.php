@@ -131,6 +131,33 @@ function checkboxBoolean($value) {
     return $rVal;
 }
 
+function buildChildrenArray($children, bool $json = false) {
+    $childrenArray = false;
+    if (isset($children) && is_array($children)) {
+        $childrenArray = [];
+        foreach ($children as $child) {
+            if (array_key_exists("name", $child) && array_key_exists("age", $child)) {
+                if (is_string($child["name"]) && strlen($child["name"]) > 0
+                    && in_array($child["age"], array("infant", "toddler", "school_age"))) {
+                    $childObject = new stdClass();
+                    $childObject->name = $child["name"];
+                    $childObject->age = $child["age"];
+
+                    array_push($childrenArray, $childObject);
+
+                    $childObject = null;
+                }
+            }
+        }
+    }
+
+    if (is_array($childrenArray) && $json) {
+        $childrenArray = json_encode($childrenArray);
+    }
+
+    return $childrenArray;
+}
+
 function getTimeRestraints($timeRestraint) {
     $timeRestraint = (is_string($timeRestraint) && strlen($timeRestraint) > 0) ? $timeRestraint : 'today';
     $now = Carbon::now();

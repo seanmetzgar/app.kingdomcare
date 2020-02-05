@@ -31,4 +31,5 @@ require('jquery-ui/ui/widgets/datepicker.js');
 require('select2');
 require('starrr/dist/starrr.js');
 require('jquery-mask-plugin');
+require('./dncalendar.js');
 
