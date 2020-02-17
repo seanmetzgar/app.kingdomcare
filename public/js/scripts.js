@@ -94,6 +94,7 @@
 /***/ (function(module, exports) {
 
 $(document).ready(function () {
+  $.trumbowyg.svgPath = '/images/trumbowyg/icons.svg';
   $nav = $('.profile-tabs');
   $('.datepicker').datepicker(); // Mobile Nav Overlay
 
@@ -223,6 +224,32 @@ $(document).ready(function () {
     }
 
     $(this).val(value);
+  });
+  $('.simple-mce').trumbowyg({
+    btns: [['undo', 'redo'], // Only supported in Blink browsers
+    ['strong', 'em'], ['link']]
+  }).on('tbwfocus', function () {
+    $(this).parents('.trumbowyg-box').addClass('has-focus');
+  }).on('tbwblur', function () {
+    $(this).parents('.trumbowyg-box').removeClass('has-focus');
+  });
+  $('.oembed').each(function () {
+    var $this = $(this);
+    var image = "url('" + $this.data('image') + "')";
+    var aspect = $this.data('aspect-ratio') + "%";
+    $this.css({
+      "height": "0px",
+      "padding": "0 0 " + aspect,
+      "backgroundImage": image
+    });
+    $this.find('.button').on('click', function (e) {
+      $this.addClass('play');
+      $this.find('iframe').trigger('click');
+    });
+  });
+  $(document).on('click', 'label.disable-click', function (e) {
+    if (e.target !== this) return;
+    e.preventDefault();
   });
 });
 

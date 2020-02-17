@@ -75,7 +75,7 @@
                         <textarea type="message" name="journey"
                                   value="{{ Auth::user()->journey }}"
                                   placeholder="You can enter a maximum of 1,200 characters here..."
-                                  maxlength="1200"></textarea>
+                                  maxlength="1200" class="simple-mce"></textarea>
                     </div>
                     <!--loginoptions-->
                     <div class="btn-container">
@@ -92,68 +92,4 @@
 
 @section('extra-scripts')
     <script type="text/javascript" src="{{ asset('js/hammer-slider.js') }}"></script>
-    <script>
-        $(".addchild").click(function () {
-            var clone = null;
-            var childClasses = "clone register-clone";
-            var idNumber = parseInt($("#childContainer").data("record-index"));
-            idNumber = isNaN(idNumber) ? 1 : idNumber + 1;
-
-            clone = $('#child0').clone().attr({"id": "child" + idNumber, "class": childClasses});
-
-            clone.find("input, textarea").each(function() {
-                var $this = $(this);
-                var type = false;
-                var name = null;
-                var willRequire = null;
-
-                name = $this.attr("name");
-                name = name.replace("[0]", "[" + idNumber + "]");
-                $this.attr("name", name);
-
-                willRequire = $this.data("will-require");
-                if (typeof willRequire === "string") {
-                    willRequire = willRequire.replace("[0]", "[" + idNumber + "]");
-                    $this.data('will-require', willRequire);
-                }
-
-                type = $this.attr("type");
-                console.log(typeof type);
-                type = (typeof type === "string") ? type : false;
-
-                if (type === "checkbox" || type === "radio") {
-                    $this.prop("checked", false).removeProp("checked");
-                } else {
-                    $this.val('');
-                }
-            });
-
-            clone.find(".im-x-mark").removeClass("iGone");
-
-            clone.appendTo("#childContainer");
-            $("#childContainer").data("record-index", idNumber);
-
-            $(".im-x-mark").click(function(){
-                $(this).closest(".clone").empty()
-            });
-        });
-
-        $(document).on("change blur", "[data-will-require]", function() {
-            var $parent = $(this);
-            var willRequire = $(this).data("will-require");
-            if (willRequire) {
-                willRequire = willRequire.split("|");
-                $(willRequire).each(function() {
-                    var selector = "[name=\"" + this + "\"]";
-                    var $selector = $(selector).eq(0);
-
-                    if ($parent.val()) {
-                        $selector.prop("required", true);
-                    } else {
-                        $selector.prop("required", false).removeProp("required");
-                    }
-                });
-            }
-        })
-    </script>
 @endsection

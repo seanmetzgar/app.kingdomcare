@@ -26,6 +26,7 @@
         "lodash": "^4.17.13",
         "popper.js": "^1.12",
         "select2": "4.0.12",
-        "starrr": "2.0.4"
+        "starrr": "2.0.4",
+        "trumbowyg": "2.21.0"
     }
 }

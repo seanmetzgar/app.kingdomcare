@@ -32,4 +32,5 @@ require('select2');
 require('starrr/dist/starrr.js');
 require('jquery-mask-plugin');
 require('./dncalendar.js');
-
+require('./trumbowyg/trumbowyg.js');
+require('./children.js');

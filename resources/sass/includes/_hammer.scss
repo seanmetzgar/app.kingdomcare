@@ -4069,7 +4069,7 @@ body.main .content{
                 font-size: 1em;
             }
 
-            .icon1, .icon2, .icon3{
+            .icon {
                 max-width: 120px;
             }
         }
@@ -5804,8 +5804,6 @@ body.main .content{
 
 #FamilyInfo{
     margin-top: 4%;
-    overflow-y:scroll;
-    max-height: 900px;
 
     .child{
         clear: both;
@@ -5816,8 +5814,17 @@ body.main .content{
         //	margin-bottom: 1%;
     }
 
-    .childContainer{
+    .standard-content {
+        padding: 0;
+        margin: 0;
+        max-width: none;
+    }
 
+    #childContainer{
+        .clone {
+            border: 1px solid $lighterpurple;
+            padding: 1rem;
+        }
     }
 
     input:focus{
@@ -5843,6 +5850,11 @@ body.main .content{
         input{
             margin-top: 1%;
         }
+
+        @media screen and (max-width: 800px) {
+            width: 100%;
+            float: none;
+        }
     }
 
     .profile-inforight{
@@ -5852,6 +5864,11 @@ body.main .content{
 
         input{
             margin-top: 1%;
+        }
+
+        @media screen and (max-width: 800px) {
+            width: 100%;
+            float: none;
         }
     }
 
@@ -5868,6 +5885,7 @@ body.main .content{
         font-size: 1em;
         font-family:$pfont;
         padding-left:10px;
+        text-indent: 0;
         margin-top: .5%;
 
     }
@@ -5992,7 +6010,6 @@ body.main .content{
         width: 60%;
         float: right;
         text-align: right;
-        margin-top: 10%;
 
         .btn, .btn-outline{
             width: 35%;
@@ -7250,6 +7267,11 @@ body.main .content{
     .right{
         width: 32%;
 
+        &.vid {
+            @media screen and (max-width: 800px) {
+                width: 100%;
+            }
+        }
         @media screen and (max-width: 600px){
             width: 100%;
         }
@@ -7325,23 +7347,11 @@ body.main .content{
             }
 
             svg{
-                position: absolute;
-                width: 30%;
-                top: 28%;
-                left: 34%;
                 cursor: pointer;
 
                 .z{fill:#bcb0c4; opacity: .7; transition: all 250ms ease-in-out;}
                 .b{fill:none;stroke:#1f1844;stroke-miterlimit:10;stroke-width:3px; transition: all 250ms ease-in-out;}
                 .c{fill:#1f1844;transition: all 250ms ease-in-out; }
-
-                @media screen and (max-width: 800px){
-                    top:40%;
-                }
-
-                @media screen and (max-width: 600px){
-                    top:33%;
-                }
             }
 
             svg:hover{
@@ -7379,7 +7389,7 @@ body.main .content{
             display: flex;
             margin-top: -11px;
 
-            .icon1, .icon2, .icon3{
+            .icon {
                 width: 90px;
 
                 svg{

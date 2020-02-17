@@ -23,7 +23,7 @@
                             <div id="child_1">
                                 <i class="im im-x-mark iGone"></i>
                                 <label for="childName" class="phone">Years of Experience & Relevant Experience</label>
-                                <textarea required name="experience_description">{{ Auth::user()->experience_description }}</textarea>
+                                <textarea required name="experience_description" class="simple-mce">{{ Auth::user()->experience_description }}</textarea>
 
                                 <label>Age Groups You Have The Most Experience With</label>
                                 <div class="cAge" id="sitter-cAge">
@@ -77,7 +77,7 @@
                         <textarea type="message" name="journey"
                             value="{{ Auth::user()->journey }}"
                             placeholder="You can enter a maximum of 1,200 characters here..."
-                            maxlength="1200"></textarea>
+                            maxlength="1200" class="simple-mce"></textarea>
                     </div>
                     <!--loginoptions-->
                     <div class="btn-container">

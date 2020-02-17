@@ -1,9 +1,6 @@
 form {
+    &.update-children,
     &.register {
-        display: flex !important;
-        flex-wrap: wrap;
-        justify-content: space-between;
-        margin: 0;
 
         label {
 
@@ -43,7 +40,10 @@ form {
             }
         }
         select {
+            font-size: 1rem;
             option {
+                height: auto;
+                font-size: 1rem;
                 line-height: 3rem;
                 padding-left: 1rem; padding-right: 1rem;
             }
@@ -80,26 +80,6 @@ form {
                 z-index: 3;
             }
         }
-
-        .select-wrapper {
-            position: relative;
-            z-index: 3;
-            height: 50px;
-
-            &::after {
-                font-family: iconmonstr-iconic-font;
-
-                content: '\e013';
-                font-size: 9px;
-                position: absolute;
-                top: 50%;
-                transform: translateY(-50%);
-                right: 10px;
-                color: $orange;
-                pointer-events: none;
-            }
-        }
-
 
         .register-field {
             box-sizing: border-box;
@@ -142,6 +122,13 @@ form {
                         &::after {
                             transform: none;
                         }
+                        select {
+                            font-size: 1rem;
+                            option {
+                                height: auto;
+                            }
+                        }
+
                     }
 
                     .invalid-feedback {
@@ -178,6 +165,75 @@ form {
                     width: 40%;
                 }
             }
+        }
+    }
+    &.register {
+        display: flex !important;
+        flex-wrap: wrap;
+        justify-content: space-between;
+        margin: 0;
+    }
+    &.update-children {
+        .profile-info,
+        .profile-infoleft,
+        .profile-inforight {
+            margin-bottom: 1rem;
+            padding-bottom: 0;
+        }
+
+        .profile-infoleft,
+        .profile-inforight {
+            @media screen and (max-width: 800px) {
+                width: 100%;
+                float: none;
+            }
+        }
+
+        .cAge {
+            position: relative;
+            top: -2rem;
+            margin-bottom: -2.5rem;
+            justify-content: center;
+
+            input {
+                display: none !important;
+            }
+            @media screen and (max-width: 800px) {
+                top: -1.5rem;
+                margin-bottom: -2rem;
+            }
+        }
+
+        .register-field {
+            &.dob {
+                padding-top: 0;
+                .dob-wrapper {
+                    .dob-select {
+                        select {
+                            margin-top: 4px;
+                        }
+
+                    }
+                }
+            }
+        }
+    }
+    .select-wrapper {
+        position: relative;
+        z-index: 3;
+        height: 50px;
+
+        &::after {
+            font-family: iconmonstr-iconic-font;
+
+            content: '\e013';
+            font-size: 9px;
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            right: 10px;
+            color: $orange;
+            pointer-events: none;
         }
     }
 }
@@ -329,5 +385,26 @@ body, .profile-info, .profile-info .pinfo-left, .profile-info .pinfo-full {
             border-color: $dpurple;
             outline: none;
         }
+    }
+}
+
+.trumbowyg-box {
+    border:solid 3px $lpurple;
+    border-top: solid 1px $lpurple;
+    border-left:solid 1px $lpurple;
+    font-size: 1em;
+    font-family:$pfont;
+
+    &.has-focus {
+        border-color: $dpurple;
+    }
+
+    .trumbowyg-editor {
+        p {
+            text-align: left !important;
+        }
+    }
+    textarea {
+        border: 0 !important;
     }
 }

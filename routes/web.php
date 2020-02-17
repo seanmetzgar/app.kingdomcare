@@ -28,6 +28,10 @@ Route::domain(env('APP_DOMAIN', 'app.kingdomcaresitters.com'))->group(function()
         return 'hi';
     })->middleware('can:viewAll,App\User')->name('users');
 
+    Route::get('/search', function(Request $request) {
+        return view('app.search.results');
+    });
+
     Route::prefix('me')->middleware('auth')->group(function () {
         Route::get('', 'UserController@view')->name('profile.self');
         Route::get('edit', 'UserController@edit')->name('profile.self.edit');
@@ -36,6 +40,17 @@ Route::domain(env('APP_DOMAIN', 'app.kingdomcaresitters.com'))->group(function()
     // Form Handlers
     Route::match(['put', 'patch'], '/user/{user}/select-role', 'UserController@selectRole')->middleware('can:update,user')->name('user.select-role');
     Route::match(['put', 'patch'], '/users/{user}/update', 'UserController@update')->middleware('can:update,user')->name('user.update');
+
+    // OAuth Routes
+    Route::prefix('oauth')->group(function() {
+        Route::get('{provider}/login', 'Auth\LoginController@redirectToProvider')
+            ->where('provider', env('OAUTH_ALLOWED_ENGINES'))->name('oauth.login');
+        Route::get('{provider}/callback', 'Auth\LoginController@handleProviderCallback')
+            ->where('provider', env('OAUTH_ALLOWED_ENGINES'))->name('oauth.callback');
+    });
+    Route::get('login/fail', function() {
+        return "OAuth Failure";
+    })->name('oauth.failure');
 
     // Testing Purposes
     Route::get('/test', function() {

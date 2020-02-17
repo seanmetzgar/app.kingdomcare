@@ -6,13 +6,13 @@
     <p>Welcome to KingdomCare. Login with social media or your email address.</p>
     <div class="loginOptions">
         <div class="socialLogin">
-            <a href="" class="fb-log">
+            <a href="{{ route('oauth.login', 'facebook') }}" class="fb-log">
                 LOGIN WITH FACEBOOK
             </a>
-            <a href="" class="tw-log">
+            <a href="{{ route('oauth.login', 'twitter') }}" class="tw-log">
                 LOGIN WITH TWITTER
             </a>
-            <a href="" class="google-log">
+            <a href="{{ route('oauth.login', 'google') }}" class="google-log">
                 LOGIN WITH GOOGLE
             </a>
         </div><!--sociallogin-->

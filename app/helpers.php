@@ -5,6 +5,7 @@ use Illuminate\Support\Str;
 use Hashids\Hashids;
 use Illuminate\Support\HtmlString;
 use Illuminate\Http\Request;
+use Illuminate\Support\Arr;
 
 class TimeRestraints {
     public $start = null;
@@ -143,11 +144,29 @@ function buildChildrenArray($children, bool $json = false) {
                     $childObject->name = $child["name"];
                     $childObject->age = $child["age"];
 
+                    if (array_key_exists("dob_month", $child)
+                        && is_string($child["dob_month"]) && strlen($child["dob_month"])) {
+                        $childObject->dob_month = $child["dob_month"];
+                    }
+                    if (array_key_exists("dob_day", $child)
+                        && is_string($child["dob_day"]) && strlen($child["dob_day"])) {
+                        $childObject->dob_day = $child["dob_day"];
+                    }
+                    if (array_key_exists("dob_year", $child)
+                        && is_string($child["dob_year"]) && strlen($child["dob_year"])) {
+                        $childObject->dob_year = $child["dob_year"];
+                    }
+                    if (array_key_exists("gender", $child)
+                        && is_string($child["gender"]) && strlen($child["gender"])) {
+                        $childObject->gender = $child["gender"];
+                    }
+
                     array_push($childrenArray, $childObject);
 
                     $childObject = null;
                 }
             }
+
         }
     }
 
@@ -244,4 +263,62 @@ function processSignupCounts($users) {
     }
 
     return (object)$usersObj;
+}
+
+function setIfHasInput(Request $request, String $key, &$model, $parameter = null) {
+    $parameter = (is_string($parameter) && strlen($parameter) > 0) ? $parameter : $key;
+    if ($request->has($key)) {
+        $value = $request->input($key);
+        if (array_key_exists($parameter, $model->getAttributes())) {
+            $model[$parameter] = $value;
+        } else {
+            $model->setMeta($parameter, $value);
+        }
+    }
+}
+
+function setIfHasBoolInput(Request $request, String $key, &$model, $parameter = null) {
+    $parameter = (is_string($parameter) && strlen($parameter) > 0) ? $parameter : $key;
+    if ($request->has($key)) {
+        $value = checkboxBoolean($request->input($key));
+        $value = is_bool($value) ? $value : false;
+
+        if (array_key_exists($parameter, $model->getAttributes())) {
+            $model[$parameter] = $value;
+        } else {
+            $model->setMeta($parameter, $value);
+        }
+    }
+}
+
+function getExperienceNiceName($value) {
+    switch($value) {
+        case 'experience_add_adhd':
+            $rVal = "ADD / ADHD";
+            break;
+        case 'experience_asd':
+            $rVal = "Autism Spectrum Disorder";
+            break;
+        case 'experience_visually_impaired':
+            $rVal = "Blind / Visually Impaired";
+            break;
+        case 'experience_hearing_impaired':
+            $rVal = "Deaf / Hearing Impaired";
+            break;
+        case 'experience_developmental':
+            $rVal = "Developmental Disabilities";
+            break;
+        case 'experience_behavioral':
+            $rVal = "Behavioral / Emotional Disorders";
+            break;
+        case 'experience_down_syndrome':
+            $rVal = "Down Syndrome";
+            break;
+        case 'experience_seizures':
+            $rVal = "Epilepsy / Seizure Disorder";
+            break;
+        default:
+            $rVal = false;
+    }
+    return $rVal;
 }

@@ -6,6 +6,8 @@ use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Kodeine\Metable\Metable;
+use Embed\Embed;
+use Illuminate\Support\HtmlString;
 
 /**
  * App\User
@@ -89,6 +91,7 @@ class User extends Authenticatable
         'city',
         'region',
         'phone',
+        'avatar',
         'dob',
         'registration_complete',
     ];
@@ -110,6 +113,10 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    public function oauths() {
+        return $this->hasMany(SocialAccount::class);
+    }
 
     public function roles() {
         return $this->belongsToMany(Role::class);
@@ -175,4 +182,89 @@ class User extends Authenticatable
 
         return $average;
     }
+
+    public function getVideoResumeEmbed() {
+        return Embed::create($this->video_resume);
+    }
+
+    public function hasSpecialExperience() {
+        $fields = array(
+            'experience_add_adhd',
+            'experience_asd',
+            'experience_visually_impaired',
+            'experience_hearing_impaired',
+            'experience_developmental',
+            'experience_behavioral',
+            'experience_down_syndrome',
+            'experience_seizures'
+        );
+        $rVal = false;
+        foreach ($fields as $field) {
+            $rVal = ($this->getAttribute($field)) ? true : $rVal;
+        }
+
+        return $rVal;
+    }
+
+    public function buildSpecialExperience() {
+        $fields = array(
+            'experience_add_adhd',
+            'experience_asd',
+            'experience_visually_impaired',
+            'experience_hearing_impaired',
+            'experience_developmental',
+            'experience_behavioral',
+            'experience_down_syndrome',
+            'experience_seizures'
+        );
+        $rVal = '';
+        $format = '<div class="checkcontain"><img src="images/check.png" alt="checkmark"/><p>%s</p></div>';
+        foreach ($fields as $field) {
+            $rVal .= ($this->getAttribute($field)) ?
+                sprintf($format, getExperienceNiceName($field)) : '';
+        }
+
+        return new HtmlString($rVal);
+    }
+
+    public function hasChildren() {
+        $rVal = false;
+        if (isset($this->children) && is_string($this->children)) {
+            $children = json_decode($this->children);
+            $rVal = (is_array($children) && count($children) > 0) ? true : false;
+        }
+        return $rVal;
+    }
+    public function buildChildIcons() {
+        $rVal = '';
+        $infants = 0;
+        $toddlers = 0;
+        $school_age = 0;
+        if (isset($this->children) && is_string($this->children)) {
+            $children = json_decode($this->children);
+            if (is_array($children) && count($children) > 0) {
+                $rVal = '<div class="childicons scrollhide">';
+                foreach ($children as $child) {
+                    if (is_object($child)) {
+                        if ($child->age === "infant") $infants++;
+                        elseif ($child->age === "toddler") $toddlers++;
+                        elseif ($child->age === "school_age") $school_age++;
+                    }
+                }
+                if ($infants > 0) {
+                    $rVal .= ' <img class="childicon" src="images/infant-icon-nocircle.svg" alt="infant icon"/>' . $infants;
+                }
+                if ($toddlers > 0) {
+                    $rVal .= ' <img class="childicon" src="images/toddler-icon-nocircle.svg" alt="toddler icon"/>' . $toddlers;
+                }
+                if ($school_age > 0) {
+                    $rVal .= ' <img class="childicon" src="images/school-age-icon-nocircle.svg" alt="school age icon"/>' . $school_age;
+                }
+                $rVal .= '</div>';
+            }
+        }
+
+        return new HtmlString($rVal);
+    }
+
 }

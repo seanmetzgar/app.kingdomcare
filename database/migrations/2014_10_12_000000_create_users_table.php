@@ -30,6 +30,7 @@ class CreateUsersTable extends Migration
             $table->string('city')->nullable();
             $table->string('region')->nullable();
             $table->string('phone')->nullable();
+            $table->string('avatar')->nullable();
 
             // Date of Birth
             $table->date('dob')->nullable();
