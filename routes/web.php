@@ -24,9 +24,7 @@ Route::domain(env('APP_DOMAIN', 'app.kingdomcaresitters.com'))->group(function()
 
     Route::get('/dashboard', 'DashboardController@index')->name('dashboard');
 
-    Route::get('/users', function(Request $request) {
-        return 'hi';
-    })->middleware('can:viewAll,App\User')->name('users');
+    Route::get('/users', 'UserController@index')->middleware('can:viewAll,App\User')->name('users');
 
     Route::get('/search', function(Request $request) {
         return view('app.search.results');
@@ -54,8 +52,7 @@ Route::domain(env('APP_DOMAIN', 'app.kingdomcaresitters.com'))->group(function()
 
     // Testing Purposes
     Route::get('/test', function() {
-        $user = Auth::check() ? Auth::user() : new App\User;
-        dd($user->getFillable());
+        dd(wowzers());
     });
 });
 

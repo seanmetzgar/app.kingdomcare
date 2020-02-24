@@ -180,6 +180,16 @@ return [
          */
         Collective\Html\HtmlServiceProvider::class,
 
+        /*
+         * Helpers
+         */
+        browner12\helpers\HelperServiceProvider::class,
+
+        /*
+         * DataTables
+         */
+        Yajra\DataTables\DataTablesServiceProvider::class,
+
     ],
 
     /*
@@ -232,6 +242,8 @@ return [
         'View' => Illuminate\Support\Facades\View::class,
         'Form' => Collective\Html\FormFacade::class,
         'Html' => Collective\Html\HtmlFacade::class,
+
+        'DataTables' => Yajra\DataTables\Facades\DataTables::class,
 
     ],
 

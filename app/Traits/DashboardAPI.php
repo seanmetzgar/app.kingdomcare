@@ -5,6 +5,7 @@ namespace App\Traits;
 use App\User;
 
 trait DashboardAPI {
+
     private function getNewSignupsCounts($timeRestraint = null) {
         $restraints = getTimeRestraints($timeRestraint);
         $previousRestraints = getPreviousTimeRestraints($timeRestraint);

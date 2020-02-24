@@ -1,4 +1,7 @@
-@php $bodyClass = isset($bodyClass) ? $bodyClass : ""; @endphp<!doctype html>
+@php
+    $bodyClass = isset($bodyClass) ? $bodyClass : "";
+    $hasAPI = isset($hasAPI) && is_bool($hasAPI) ? $hasAPI : false;
+@endphp<!doctype html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
 <head>
     <meta charset="utf-8">
@@ -30,6 +33,9 @@
     @include('dropins.app.footers.default')
     @include('dropins.form.logoutForm')
     <!-- Scripts -->
+    @if($hasAPI && Auth::check())
+    <script>var _BT = '{!! Auth::user()->api_token !!}';</script>
+    @endif
     <script src="{{ asset('js/app.js') }}"></script>
     @yield('extra-scripts')
 </body>

@@ -13,12 +13,13 @@ use Illuminate\Http\Request;
 |
 */
 
-Route::domain(env('APP_DOMAIN', 'app.kingdomcaresitters.com'))->group(function() {
-    Route::middleware('auth:api')->get('/user', function (Request $request) {
-        return $request->user();
+Route::domain(env('APP_DOMAIN', 'app.kingdomcaresitters.com'))->middleware('auth:api')->group(function() {
+    Route::prefix('users')->group(function() {
+        Route::get('/', 'API\DashboardController@getUsers')->name('api.users');
     });
 
-    Route::middleware('auth:api')->prefix('dashboard')->group(function() {
+
+    Route::prefix('dashboard')->group(function() {
         Route::get('newSignups', 'API\DashboardController@newSignups');
     });
 

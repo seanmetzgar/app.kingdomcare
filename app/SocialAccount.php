@@ -19,4 +19,8 @@ class SocialAccount extends Model
         'refreshToken',
         'expires'
     ];
+
+    public function user() {
+        return $this->belongsTo(User::class);
+    }
 }

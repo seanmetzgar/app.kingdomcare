@@ -9133,11 +9133,12 @@ body.admin{
             }
         }
 
-        .status-wrapper, .date-wrapper, .type-wrapper, .active-wrapper{
+        .status-wrapper, .date-wrapper, .type-wrapper, .active-wrapper {
             width: 24%;
             height: 50px;
             margin-top: 33px;
             position:relative;
+            
             select{
                 margin-top: 12px;
                 position: relative;
@@ -9162,6 +9163,7 @@ body.admin{
                 background-image:none;
                 width: 9px;
                 height: 9px;
+                z-index: 2;
             }
         }
 

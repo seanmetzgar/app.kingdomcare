@@ -46,10 +46,7 @@ class LoginController extends Controller
     }
 
     protected function authenticated(Request $request, $user) {
-        $user->update([
-            'last_login_at' => Carbon::now()->toDateTimeString(),
-            'last_login_ip' => $request->getClientIp()
-        ]);
+        $this->updateLastLogin($user, $request);
     }
 
     /** START: Socialite Stuff */
@@ -71,7 +68,7 @@ class LoginController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function handleProviderCallback($provider) {
+    public function handleProviderCallback(Request $request, $provider) {
         switch($provider) {
             case "facebook":
                 $fields = [
@@ -90,10 +87,10 @@ class LoginController extends Controller
         } else {
             $providerUser = Socialite::driver($provider)->user();
         }
-        $user = $this->createOrGetUser($providerUser, $provider);
+        $user = $this->createOrGetUser($providerUser, $provider, $request);
         $remember = Session::get('login-remember');
 
-        if ($user === false) {
+        if ($user === null || $user === false) {
             return redirect()->route('oauth.failure');
         } else {
             Auth::login($user, $remember);
@@ -107,7 +104,7 @@ class LoginController extends Controller
      *
      * @return Object $user
      */
-    private function createOrGetUser($providerUser, $provider)
+    private function createOrGetUser($providerUser, $provider, $request)
     {
         $account = SocialAccount::where('provider', $provider)
             ->where('provider_user_id', $providerUser->getId())
@@ -116,6 +113,7 @@ class LoginController extends Controller
         if ($account) {
             //Return account if found
             $user = $account->user;
+            $this->updateLastLogin($user, $request);
 
             return $user;
         } else {
@@ -183,7 +181,15 @@ class LoginController extends Controller
                 'expires' => $expires,
             ]);
 
+            $this->updateLastLogin($user, $request);
             return $user;
         }
+    }
+
+    protected function updateLastLogin(User $user, $request) {
+        $user->update([
+            'last_login_at' => Carbon::now()->toDateTimeString(),
+            'last_login_ip' => $request->getClientIp()
+        ]);
     }
 }

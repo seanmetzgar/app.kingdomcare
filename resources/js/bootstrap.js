@@ -31,6 +31,7 @@ require('jquery-ui/ui/widgets/datepicker.js');
 require('select2');
 require('starrr/dist/starrr.js');
 require('jquery-mask-plugin');
+require('datatables.net');
 require('./dncalendar.js');
 require('./trumbowyg/trumbowyg.js');
 require('./children.js');

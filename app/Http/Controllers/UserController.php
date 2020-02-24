@@ -55,6 +55,10 @@ class UserController extends Controller
         return redirect()->route('dashboard');
     }
 
+    public function index(Request $request) {
+        return view('app.users.index');
+    }
+
     public function view(Request $request, User $profile = null) {
 
         if ($profile === null) {
