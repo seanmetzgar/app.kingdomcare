@@ -9,10 +9,10 @@
 
 
                     <div class="date-wrapper selectwrap">
-                        <input type="text" name="date" class="datepicker" placeholder="Dates Needed" onfocus="this.placeholder=''" onblur="this.placeholder='Date Needed'"></div>
+                        <input type="text" name="date" class="datepicker" placeholder="Date Needed" onfocus="this.placeholder=''" onblur="this.placeholder='Date Needed'" autocomplete="off"></div>
                     <div class="number-wrapper selectwrap">
-                        <select size=1 onmousedown="if(this.options.length>5){this.size=5;}"  onchange='this.size=1;' onblur="this.size=1;">
-                            <option disabled selected hidden># of Children</option>
+                        <select size=1 onmousedown="if(this.options.length>5){this.size=5;}"  onchange='this.size=1;' onblur="this.size=1;" autocomplete="off">
+                            <option value="" selected># of Children</option>
                             <option>1</option>
                             <option>2</option>
                             <option>3</option>
@@ -21,17 +21,21 @@
                             <option>6+</option>
                         </select></div>
                     <div class="rate-wrapper selectwrap">
-                        <select size=1 onmousedown="if(this.options.length>3){this.size=4;}"  onchange='this.size=1;' onblur="this.size=1;">
-                            <option disabled selected hidden>Rate Range</option>
+                        <select size=1 onmousedown="if(this.options.length>3){this.size=4;}"  onchange='this.size=1;' onblur="this.size=1;" autocomplete="off">
+                            <option value="" selected>Rate Range</option>
                             <option>$0-$10</option>
                             <option>$10-$20</option>
                             <option>$20-$30</option>
                             <option>$30+</option>
                         </select></div>
+                    <div class="location-wrapper selectwrap">
+                        <input type="text" name="location" placeholder="Zip Code" onfocus="this.placeholder=''" onblur="this.placeholder='Zip Code" autocomplete="off"></div>
+                    <div class="current-location-wrapper selectwrap">
+                        <p><a href="#">Current Location</a></p>
+                        <input type="hidden" name="locLat">
+                        <input type="hidden" name="locLng"></div>
+                    <button type="submit" class="search-submit">Search</button>
                 </div>
-                <div class="location-wrapper selectwrap">
-                    <input type="text" name="location" placeholder="Where are you looking for childcare?" onfocus="this.placeholder=''" onblur="this.placeholder='Where are you looking for childcare?'"></div>
-                <button type="submit" class="search-submit">Search</button>
             </form>
         </div>
         <div class="space"></div>

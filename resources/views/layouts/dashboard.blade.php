@@ -30,6 +30,9 @@
 
         @yield('content')
     </div>
+
+    @yield('overlays')
+
     @include('dropins.app.footers.default')
     @include('dropins.form.logoutForm')
     <!-- Scripts -->

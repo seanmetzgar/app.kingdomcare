@@ -2452,10 +2452,7 @@ ul{
 body.main .search .dash-search-wrapper{
     display: flex;
     justify-content: space-between;
-
-    @media screen and (max-width: 600px){
-        display: block;
-    }
+    flex-wrap: wrap;
 
     input{
         margin-top: 0;
@@ -2501,9 +2498,33 @@ body.main .search {
         border-left: solid 1px $lpurple;
     }
 
+    .number-wrapper,
+    .date-wrapper,
+    .location-wrapper,
+    .rate-wrapper,
+    .current-location-wrapper {
+        position: relative;
+        width: 32%;
+        flex-grow: 0;
+        flex-shrink: 0;
+        height: 50px;
+        margin-top: 2%;
+    }
+
+    @media screen and (max-width: 600px) {
+        .number-wrapper,
+        .date-wrapper,
+        .rate-wrapper {
+            width: 100%;
+        }
+        .location-wrapper,
+        .current-location-wrapper {
+            width: 49%;
+        }
+
+    }
 
     select{
-
         height: 50px;
         border:solid 3px white;
         border-top: solid 1px white;
@@ -2542,19 +2563,11 @@ body.main .search {
         padding-top:0px;
     }
 
-
-
     .number-wrapper {
-        position: relative;
-        height: 50px;
-        width: 32%;
-        z-index:1000;
-
+        z-index:99;
     }
 
     .number-wrapper:after {
-
-
         content: '';
         background-image:url(images/baby.svg);
         background-size:cover;
@@ -2568,70 +2581,43 @@ body.main .search {
         color: $orange;
         pointer-events: none;
     }
-
     .rate-wrapper {
-        position: relative;
-        height: 50px;
-        width: 32%
-
+        z-index: 98;
+        &::after {
+            content: '';
+            background-image:url(images/rate.svg);
+            -o-background-size: cover;
+            -moz-background-size: cover;
+            -webkit-background-size: cover;
+            background-size:cover;
+            -webkit-background-size: cover;
+            width:25px;
+            height: 25px;
+            position: absolute;
+            top: 12px;
+            right: 20px;
+            color: $orange;
+            pointer-events: none;
+        }
     }
-
-    .rate-wrapper:after {
-
-
-        content: '';
-        background-image:url(images/rate.svg);
-        -o-background-size: cover;
-        -moz-background-size: cover;
-        -webkit-background-size: cover;
-        background-size:cover;
-        -webkit-background-size: cover;
-        width:25px;
-        height: 25px;
-        position: absolute;
-        top: 12px;
-        right: 20px;
-        color: $orange;
-        pointer-events: none;
-    }
-
     .date-wrapper {
-        position: relative;
-        height: 50px;
-        width: 32%
-
-
-
-
+        z-index: 100;
+        &::after {
+            content: '';
+            background-image:url(images/calendar.svg);
+            background-size:cover;
+            -webkit-background-size: cover;
+            width:22px;
+            height: 22px;
+            position: absolute;
+            top: 11px;
+            right: 20px;
+            color: $orange;
+            pointer-events: none;
+        }
     }
-
-
-
-
-    .date-wrapper::after {
-
-
-        content: '';
-        background-image:url(images/calendar.svg);
-        background-size:cover;
-        -webkit-background-size: cover;
-        width:22px;
-        height: 22px;
-        position: absolute;
-        top: 11px;
-        right: 20px;
-        color: $orange;
-        pointer-events: none;
-    }
-
 
     .location-wrapper {
-        position: relative;
-        height: 50px;
-        width: 66%;
-        margin-top:2%;
-        float: left;
-
         input{
             width: 100%;
             background: $dpurple;
@@ -2642,38 +2628,78 @@ body.main .search {
         }
 
         input::placeholder{
-
             color: white;
         }
 
+        &::after {
+            content: '';
+            background-image:url(images/location.svg);
+            background-size:cover;
+            -webkit-background-size: cover;
+            width:18px;
+            height: 25px;
+            position: absolute;
+            top: 10px;
+            right: 20px;
+            color: $orange;
+            pointer-events: none;
+        }
     }
 
-    .location-wrapper:after {
+    .current-location-wrapper {
+        p {
+            margin: 0;
+            text-align: left;
+            color: white;
+            line-height: 50px;
+            font-size: .9rem;
+            font-style: italic;
 
+            &::before {
+                content: 'or ';
+            }
+        }
 
-        content: '';
-        background-image:url(images/location.svg);
-        background-size:cover;
-        -webkit-background-size: cover;
-        width:18px;
-        height: 25px;
-        position: absolute;
-        top: 10px;
-        right: 20px;
-        color: $orange;
-        pointer-events: none;
+        @media screen and (max-width: 600px) {
+            p {
+                line-height: 1;
+                text-align: center;
+                &::before {
+                    display: none;
+                }
+            }
+
+            a {
+                display: block;
+                width: 100%;
+                color: white;
+                border: 3px solid white;
+                border-top-width: 1px;
+                border-left-width: 1px;
+                background-color: transparent;
+                font-size: .875em;
+                text-transform: uppercase;
+                border-radius: 25px;
+                font-weight: bold;
+                font-family: $pfont;
+                line-height: 44px;
+                box-sizing: border-box;
+                transition: all 250ms ease-in-out;
+                font-style: normal;;
+            }
+        }
     }
-
 
     button.search-submit{
-        margin-top: 2%;
         width: 32%;
+        margin-top: 2%;
+        flex-grow: 0; flex-shrink: 0;
+
         border: solid 3px $lpurple;
         border-top: solid 1px $lpurple;
         border-left: solid 1px $lpurple;
         background-color: $lpurple;
         color: white;
-        margin-left: 2%;
         transition: all 250ms ease-in-out;
         font-size: .875em;
         text-transform: uppercase;
@@ -2684,6 +2710,9 @@ body.main .search {
 
         @media screen and (max-width: 600px){
             width: 50%;
+            display: block;
+            margin-left: auto; margin-right: auto;
+            float: none;
         }
 
 
@@ -2693,20 +2722,6 @@ body.main .search {
         border: solid 3px $orange;
         border-top: solid 1px $orange;
         border-left: solid 1px $orange;
-    }
-
-    .selectwrap{
-        @media screen and (max-width: 600px){
-            margin-top: 2%;
-            width: 100%;
-        }
-    }
-
-    .location-wrapper.selectwrap{
-        @media screen and (max-width: 600px){
-            margin-top: 2%;
-
-        }
     }
 }
 
@@ -2860,6 +2875,10 @@ body.main .content{
         @media screen and (max-width: 1000px){
             flex-wrap: wrap;
         }
+    }
+
+    &.overlaybox {
+        background-color: rgba(31, 24, 68, 0.8);
     }
 
 
@@ -4258,7 +4277,7 @@ body.main .content{
 
         label{
             color: white;
-            margin-bottom:1%;
+            display: block;
         }
 
 
@@ -9138,7 +9157,7 @@ body.admin{
             height: 50px;
             margin-top: 33px;
             position:relative;
-            
+
             select{
                 margin-top: 12px;
                 position: relative;
@@ -9169,7 +9188,7 @@ body.admin{
 
         .date-wrapper, .type-wrapper, .active-wrapper{
             label{
-                opacity: 0;
+                display: block;
             }
         }
 
@@ -9248,25 +9267,15 @@ body.admin{
                 outline: none;
             }
 
-
-
-
-            // &:hover{
-            // 	width: 170px;
-            // 	.add-invoice{
-            // 		padding-left:0;
-            // 		color: white;
-            // 		background:$orange;
-            // 		width: 160px;
-            // 		h6{
-
-            // 			font-size:.5em;
-            // 			opacity: 1;
-            // 		}
-            // 	}
-            // }
-
-
+             &:hover{
+             	.add-invoice{
+             		color: white;
+             		background: $orange;
+             		h6{
+             			opacity: 1;
+             		}
+             	}
+             }
         }
 
 
@@ -9654,14 +9663,14 @@ body.admin{
         }
     }
 
-    .admin-user.savechanges{
+    .admin-user.savechanges,
+    .admin-user.resetpassword {
         img{
             width: 100px;
             display: block;
             margin: auto;
             margin-bottom: 20px;
         }
-
 
         .btn-container{
 

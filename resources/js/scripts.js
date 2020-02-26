@@ -4,6 +4,10 @@ $(document).ready(function () {
     $nav = $('.profile-tabs');
 
     $( '.datepicker' ).datepicker();
+    $( '.birthdatepicker' ).datepicker({
+        changeMonth: true,
+        changeYear: true
+    });
 
     // Mobile Nav Overlay
     $( '#ham').on('click', function() {

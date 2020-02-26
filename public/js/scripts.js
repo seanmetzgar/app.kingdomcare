@@ -96,7 +96,11 @@
 $(document).ready(function () {
   $.trumbowyg.svgPath = '/images/trumbowyg/icons.svg';
   $nav = $('.profile-tabs');
-  $('.datepicker').datepicker(); // Mobile Nav Overlay
+  $('.datepicker').datepicker();
+  $('.birthdatepicker').datepicker({
+    changeMonth: true,
+    changeYear: true
+  }); // Mobile Nav Overlay
 
   $('#ham').on('click', function () {
     $('#myNav').addClass('open');

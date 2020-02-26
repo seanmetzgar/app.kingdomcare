@@ -16,6 +16,10 @@ use Illuminate\Http\Request;
 Route::domain(env('APP_DOMAIN', 'app.kingdomcaresitters.com'))->middleware('auth:api')->group(function() {
     Route::prefix('users')->group(function() {
         Route::get('/', 'API\DashboardController@getUsers')->name('api.users');
+        Route::get('/{user}', 'API\DashboardController@getUser')->name('api.user');
+        Route::match(['put', 'patch'], '/{user}/update', 'API\DashboardController@updateUser')->name('api.user.update');
+        Route::get('/{user}/reset', 'API\DashboardController@resetPassword')->name('api.user.reset');
+        Route::get('/{user}/delete', 'API\DashboardController@deleteUser')->name('api.user.delete');
     });
 
 

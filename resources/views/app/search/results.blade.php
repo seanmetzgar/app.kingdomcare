@@ -10,9 +10,9 @@
 
                 <div class="dash-search-wrapper">
                     <div class="date-wrapper selectwrap">
-                        <input type="text" name="date" class="datepicker" placeholder="Dates Needed" onfocus="this.placeholder=''" onblur="this.placeholder='Date Needed'"></div>
+                        <input type="text" name="date" class="datepicker" placeholder="Dates Needed" onfocus="this.placeholder=''" onblur="this.placeholder='Date Needed'" autocomplete="off"></div>
                     <div class="number-wrapper selectwrap">
-                        <select size=1 onmousedown="if(this.options.length>5){this.size=5;}"  onchange='this.size=1;' onblur="this.size=1;">
+                        <select size=1 onmousedown="if(this.options.length>5){this.size=5;}"  onchange='this.size=1;' onblur="this.size=1;" autocomplete="off">
                             <option disabled selected hidden># of Children</option>
                             <option>1</option>
                             <option>2</option>
@@ -22,7 +22,7 @@
                             <option>6+</option>
                         </select></div>
                     <div class="rate-wrapper selectwrap">
-                        <select size=1 onmousedown="if(this.options.length>3){this.size=4;}"  onchange='this.size=1;' onblur="this.size=1;">
+                        <select size=1 onmousedown="if(this.options.length>3){this.size=4;}"  onchange='this.size=1;' onblur="this.size=1;" autocomplete="off">
                             <option disabled selected hidden>Rate Range</option>
                             <option>$0-$10</option>
                             <option>$10-$20</option>
@@ -31,7 +31,7 @@
                         </select></div>
                 </div>
                 <div class="location-wrapper selectwrap">
-                    <input type="text" name="location" placeholder="Where are you looking for childcare?" onfocus="this.placeholder=''" onblur="this.placeholder='Where are you looking for childcare?'"></div>
+                    <input type="text" name="location" placeholder="Where are you looking for childcare?" onfocus="this.placeholder=''" onblur="this.placeholder='Where are you looking for childcare?'" autocomplete="off"></div>
                 <button type="submit" class="search-submit">Search</button>
             </form>
         </div>
