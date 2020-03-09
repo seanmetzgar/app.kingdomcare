@@ -25,4 +25,8 @@ use Illuminate\Database\Eloquent\Model;
 class Booking extends Model
 {
     //
+
+    public function updates() {
+        return $this->morphToMany('App\Update', 'updatable');
+    }
 }
